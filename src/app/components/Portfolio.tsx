@@ -163,8 +163,7 @@ export default function Portfolio({ data }: PortfolioProps) {
     { href: '#skills', label: 'Competencias' },
     { href: '#timeline', label: 'Trayectoria' },
     { href: '#portfolio', label: 'Portafolio' },
-    { href: '#research', label: 'Investigación' },
-    { href: '#contact', label: 'Contacto' }
+    { href: '#research', label: 'Investigación' }
   ]
 
   return (
@@ -212,7 +211,7 @@ export default function Portfolio({ data }: PortfolioProps) {
               </svg>
             </a>
             <a 
-              href="#contact" 
+              href={`mailto:${data.profile.email}`} 
               onClick={() => setMobileMenuOpen(false)} 
               className="p-3 border-2 border-black bg-brand-yellow text-black hover:bg-black hover:text-white hover:shadow-neo active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all flex items-center gap-2 font-mono"
             >
@@ -331,7 +330,7 @@ export default function Portfolio({ data }: PortfolioProps) {
                 PROYECTOS
               </a>
               <a 
-                href="#contact" 
+                href={`mailto:${data.profile.email}`} 
                 className="px-6 py-3 bg-white text-black font-mono border-2 border-black hover:bg-brand-pink hover:text-white hover:shadow-neo active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-all"
               >
                 CONTACTAR
@@ -727,92 +726,7 @@ export default function Portfolio({ data }: PortfolioProps) {
           </div>
         </section>
 
-        {/* SECTION 7: CONTACT FORM */}
-        <section 
-          id="contact" 
-          className="py-20 px-6 md:p-20 relative bg-cover bg-center border-t-2 border-black" 
-          style={{ backgroundImage: `url('/images/contact_bg.jpg'), url("${getPlaceholderSvg(1671, 870, 'FONDO CONTACTO')}")` }}
-        >
-          <div className="absolute inset-0 bg-zinc-50/93 z-0"></div>
-          <div className="max-w-4xl relative z-10">
-            <div className="font-mono text-xs text-brand-pink uppercase tracking-widest mb-2 font-bold">{"// FORMULARIO DE CONTACTO"}</div>
-            <h2 className="text-3xl sm:text-5xl font-bold uppercase tracking-tighter mb-4 font-sans">
-              Escríbeme
-            </h2>
-            <p className="text-zinc-600 mb-12 max-w-xl text-base leading-relaxed">
-              ¿Tienes una propuesta académica, proyecto de producción audiovisual o de programación? Hablemos de cómo integrar valor a tu equipo.
-            </p>
 
-            <form onSubmit={handleContactSubmit} className="space-y-6 font-mono text-sm">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label htmlFor="name" className="text-zinc-700 uppercase text-xs font-bold">Nombre *</label>
-                  <input 
-                    type="text" 
-                    id="name" 
-                    name="name" 
-                    required 
-                    value={formState.name}
-                    onChange={handleInputChange}
-                    className="w-full bg-white border-2 border-black p-3 text-black focus:outline-none transition-colors"
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <label htmlFor="email" className="text-zinc-700 uppercase text-xs font-bold">Email *</label>
-                  <input 
-                    type="email" 
-                    id="email" 
-                    name="email" 
-                    required 
-                    value={formState.email}
-                    onChange={handleInputChange}
-                    className="w-full bg-white border-2 border-black p-3 text-black focus:outline-none transition-colors"
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="subject" className="text-zinc-700 uppercase text-xs font-bold">Asunto</label>
-                <input 
-                  type="text" 
-                  id="subject" 
-                  name="subject" 
-                  value={formState.subject}
-                  onChange={handleInputChange}
-                  className="w-full bg-white border-2 border-black p-3 text-black focus:outline-none transition-colors"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="message" className="text-zinc-700 uppercase text-xs font-bold">Mensaje *</label>
-                <textarea 
-                  id="message" 
-                  name="message" 
-                  required 
-                  rows={5}
-                  value={formState.message}
-                  onChange={handleInputChange}
-                  className="w-full bg-white border-2 border-black p-3 text-black focus:outline-none resize-none transition-colors"
-                />
-              </div>
-
-              {submitMessage && (
-                <div className={`p-4 border-2 ${submitSuccess ? 'border-brand-cyan text-brand-cyan bg-white' : 'border-brand-pink text-brand-pink bg-white'}`}>
-                  {submitMessage}
-                </div>
-              )}
-
-              <button 
-                type="submit" 
-                disabled={isSubmitting}
-                className="px-6 py-3 bg-brand-yellow hover:bg-black hover:text-white border-2 border-black text-black font-bold uppercase transition-all flex items-center justify-center gap-2 cursor-pointer shadow-neo hover:translate-x-[-2px] hover:translate-y-[-2px] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none disabled:opacity-55"
-              >
-                {isSubmitting ? 'ENVIANDO...' : <><Send size={16} /> ENVIAR MENSAJE</>}
-              </button>
-            </form>
-          </div>
-        </section>
 
       </main>
 
