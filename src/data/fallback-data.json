@@ -1,0 +1,152 @@
+{
+  "profile": {
+    "full_name": "José Rubén Oroz Arriola",
+    "title": "Coordinación de ABP & Producción Audiovisual",
+    "bio": "Académico y productor audiovisual con más de 15 años de experiencia integrando estratégicamente la producción mediática profesional con la innovación educativa en educación superior. Especialista en el diseño, implementación y coordinación del modelo de Aprendizaje Basado en Proyectos (ABP) aplicado a producción televisiva real en señal abierta, con impacto directo en más de 1,600 estudiantes a través del modelo intergeneracional ANGULAR. Mención Honorífica en el Premio Jalisco de Periodismo y coautor internacional en investigación COIL.",
+    "email": "hola@rubenoroz.com",
+    "phone": "",
+    "location": "Guadalajara, Jalisco, México",
+    "linkedin_url": "https://www.linkedin.com/in/rubenoroz",
+    "github_url": "",
+    "cv_url": "/cv_rubenoroz_20260227.jpg.png"
+  },
+  "experiences": [
+    {
+      "company": "Universidad del Valle de Atemajac (UNIVA)",
+      "position": "Encargado de Producciones Mediáticas",
+      "start_date": "2015",
+      "end_date": "Presente",
+      "is_current": true,
+      "description": "Dirección académica y operativa de proyectos audiovisuales bajo modelo ABP, articulando cuatro cuatrimestres consecutivos en un ecosistema formativo intergeneracional. Diseño e integración curricular de producción televisiva en señal abierta como laboratorio profesional universitario. Gestión estratégica de recursos técnicos, humanos y presupuestales."
+    },
+    {
+      "company": "Modelo ANGULAR",
+      "position": "Laboratorio-Escuela de Producción Televisiva Universitaria",
+      "start_date": "2008",
+      "end_date": "Presente",
+      "is_current": true,
+      "description": "Dirección del programa televisivo universitario transmitido en señal abierta y plataformas digitales. Más de 50 episodios producidos en múltiples temporadas. Impacto formativo directo en más de 1,600 estudiantes bajo metodología ABP replicable. Reconocimiento con Mención Honorífica en el Premio Jalisco de Periodismo (2010) e Instituto de la Mujer."
+    },
+    {
+      "company": "Universidad Panamericana",
+      "position": "Docente de Producción Audiovisual",
+      "start_date": "2022",
+      "end_date": "2023",
+      "is_current": false,
+      "description": "Asesoría y mentoría de producciones cinematográficas estudiantiles con estándares profesionales. Coordinación de equipos de VFX, animación y postproducción bajo pipeline digital. Control de cronogramas, presupuestos y entregables."
+    },
+    {
+      "company": "The One Ring Studios (EE. UU.)",
+      "position": "Project Manager VFX & Postproducción",
+      "start_date": "2021",
+      "end_date": "2022",
+      "is_current": false,
+      "description": "Gestión integral de proyectos cinematográficos en entorno internacional y modalidad remota. Coordinación de talento y equipos creativos multidisciplinarios. Control de cronogramas, presupuestos y estándares de calidad de producción."
+    },
+    {
+      "company": "Escuela Bancaria y Comercial (EBC)",
+      "position": "Catedrático - Industria Mediática",
+      "start_date": "2020",
+      "end_date": "2020",
+      "is_current": false,
+      "description": "Impartición de materias sobre industria cinematográfica, televisiva y musical. Adaptación de metodologías activas a entornos virtuales durante la contingencia por pandemia."
+    }
+  ],
+  "education": [
+    {
+      "institution": "UNIVA",
+      "degree": "Maestría en Animación 3D y Postproducción de Video",
+      "start_date": "2013",
+      "end_date": "2015",
+      "description": "Tesis enfocada en la dirección y postproducción del documental 'Jalisco Rockea', integrando flujos de trabajo profesionales de postproducción y animación."
+    },
+    {
+      "institution": "UNIVA",
+      "degree": "Licenciatura en Comunicación",
+      "start_date": "2008",
+      "end_date": "2012",
+      "description": "Especialización en Medios Audiovisuales y Teoría de la Comunicación."
+    },
+    {
+      "institution": "Universidad L'Atelier",
+      "degree": "Diplomado en Administración de Proyectos Cinematográficos",
+      "start_date": "2016",
+      "end_date": "2016",
+      "description": "Planificación estratégica, presupuestaria y legal de proyectos de cine comercial e independiente."
+    },
+    {
+      "institution": "Conservatorio / Estudios Formales",
+      "degree": "Formación Profesional en Música",
+      "start_date": "2000",
+      "end_date": "2006",
+      "description": "Estudios formales en teoría musical, armonía, composición y ejecución instrumental (guitarra y producción musical)."
+    }
+  ],
+  "projects": [
+    {
+      "title": "CloserLens",
+      "description": "Plataforma SaaS orientada a la creación de galerías públicas y la organización de proyectos multimedia. Un espacio estructurado y de alto impacto diseñado para que creadores y productores gestionen y expongan sus portafolios visuales con total claridad.",
+      "image_url": "/images/closerlens.jpg",
+      "link_url": "https://closerlens.com",
+      "category": "saas",
+      "status": "Production",
+      "sort_order": 1
+    },
+    {
+      "title": "FluxioRSV",
+      "description": "Plataforma SaaS orientada a la organización y reservación eficiente de recursos técnicos y espacios de trabajo. Simplifica la gestión, disponibilidad y coordinación de infraestructura compartida para equipos creativos y productivos.",
+      "image_url": "/images/fluxior.jpg",
+      "link_url": "https://fluxiorsv.com",
+      "category": "saas",
+      "status": "Production",
+      "sort_order": 2
+    },
+    {
+      "title": "Programa ANGULAR",
+      "description": "Documental televisivo transmitido por televisión abierta en Jalisco. Funciona como un modelo de producción circular y un laboratorio pedagógico real en el que estudiantes de comunicación coproducen contenido profesional.",
+      "image_url": "/images/angular_tv.jpg",
+      "link_url": "https://www.youtube.com/watch?v=7ufMkG7rxNU&list=PLndrJ40B61gbZxI15_ef-ZPO2ieVQLryU",
+      "category": "tv",
+      "status": "Active",
+      "sort_order": 3
+    },
+    {
+      "title": "Laboratorio Escuela",
+      "description": "Ecosistema de aprendizaje activo implementado para la integración del ABP. Conecta a la universidad con la industria televisiva comercial de señal abierta, permitiendo a estudiantes trabajar en un entorno de producción real.",
+      "image_url": "/images/laboratorio_escuela_v2.jpg",
+      "link_url": "",
+      "category": "tv",
+      "status": "Completed",
+      "sort_order": 4
+    },
+    {
+      "title": "Producción de Audio",
+      "description": "Estudio y composiciones musicales originales, aplicando teoría clásica de armonía con síntesis digital y diseño sonoro para proyectos cinematográficos y cortometrajes.",
+      "image_url": "/images/music_prod_v2.jpg",
+      "link_url": "",
+      "category": "music",
+      "status": "Ongoing",
+      "sort_order": 5
+    }
+  ],
+  "publications": [
+    {
+      "title": "Modelo de producción audiovisual circular: El programa ANGULAR como modelo pedagógico replicable",
+      "authors": "José Rubén Oroz Arriola",
+      "journal_event": "Capítulo de Libro Académico (En proceso de publicación)",
+      "publication_year": 2026,
+      "link_url": "",
+      "description": "Análisis y sistematización del programa televisivo ANGULAR como modelo de producción circular autosustentable y como marco pedagógico replicable para la enseñanza superior utilizando la metodología ABP.",
+      "is_coil": false
+    },
+    {
+      "title": "INTERNATIONAL COLLABORATIVE LEARNING IN AUDIOVISUAL EDUCATION: A COIL-BASED TELEVISION PRODUCTION EXPERIENCE BETWEEN SPAIN AND MEXICO",
+      "authors": "José Rubén Oroz Arriola, Dra. Sara Padín",
+      "journal_event": "Conferencia INTED2026",
+      "publication_year": 2026,
+      "link_url": "https://library.iated.org/view/PADINCASTRO2026INT",
+      "description": "Investigación académica internacional que describe el impacto del modelo COIL (Collaborative Online International Learning) aplicado a la producción de contenidos de televisión entre universidades de España y México.",
+      "is_coil": true
+    }
+  ]
+}
