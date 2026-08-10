@@ -2,7 +2,7 @@
 
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
-import { Profile, Experience, Education, Project, Publication } from '@/data/db'
+import { Profile, Experience, Education, Project, Publication, Course } from '@/data/db'
 
 // Helper function to verify user authentication
 async function verifyAuth() {
@@ -216,6 +216,55 @@ export async function deletePublication(id: string) {
 
     const { error } = await supabase
       .from('publications')
+      .delete()
+      .eq('id', id)
+
+    if (error) throw error
+
+    revalidatePath('/')
+    return { success: true }
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : 'Unknown error occurred'
+    return { success: false, error: msg }
+  }
+}
+
+export async function upsertCourse(courseData: Course) {
+  try {
+    const { supabase, user } = await verifyAuth()
+
+    const { error } = await supabase
+      .from('courses')
+      .upsert({
+        id: courseData.id || undefined,
+        profile_id: user.id,
+        title: courseData.title,
+        description: courseData.description,
+        image_url: courseData.image_url || '',
+        link_url: courseData.link_url || '',
+        category: courseData.category,
+        modality: courseData.modality || '',
+        duration: courseData.duration || '',
+        status: courseData.status || '',
+        sort_order: Number(courseData.sort_order || 0)
+      })
+
+    if (error) throw error
+
+    revalidatePath('/')
+    return { success: true }
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : 'Unknown error occurred'
+    return { success: false, error: msg }
+  }
+}
+
+export async function deleteCourse(id: string) {
+  try {
+    const { supabase } = await verifyAuth()
+
+    const { error } = await supabase
+      .from('courses')
       .delete()
       .eq('id', id)
 

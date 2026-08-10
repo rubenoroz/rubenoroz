@@ -3,17 +3,18 @@
 import React, { useState } from 'react'
 import { 
   User, Briefcase, GraduationCap, FolderGit2, BookOpen, 
-  Mail, Save, Trash2, Edit2, Plus
+  Mail, Save, Trash2, Edit2, Plus, Presentation
 } from 'lucide-react'
 import { 
   updateProfile, 
   upsertExperience, deleteExperience,
   upsertEducation, deleteEducation,
   upsertProject, deleteProject,
+  upsertCourse, deleteCourse,
   upsertPublication, deletePublication,
   deleteMessage, updateMessageStatus
 } from '@/app/actions/cms'
-import { Profile, Experience, Education, Project, Publication, Message } from '@/data/db'
+import { Profile, Experience, Education, Project, Publication, Message, Course } from '@/data/db'
 
 interface DashboardClientProps {
   initialData: {
@@ -21,12 +22,13 @@ interface DashboardClientProps {
     experiences: Experience[]
     education: Education[]
     projects: Project[]
+    courses: Course[]
     publications: Publication[]
     messages: Message[]
   }
 }
 
-type TabType = 'profile' | 'experiences' | 'education' | 'projects' | 'publications' | 'messages'
+type TabType = 'profile' | 'experiences' | 'education' | 'projects' | 'courses' | 'publications' | 'messages'
 
 function getTempId(): string {
   if (typeof window !== 'undefined' && window.crypto && window.crypto.randomUUID) {
@@ -54,6 +56,10 @@ export default function DashboardClient({ initialData }: DashboardClientProps) {
   // Project Form
   const [projForm, setProjForm] = useState({ id: '', title: '', description: '', image_url: '', link_url: '', category: 'saas', status: '', sort_order: 0 })
   const [isEditingProj, setIsEditingProj] = useState(false)
+
+  // Course Form
+  const [courseForm, setCourseForm] = useState({ id: '', title: '', description: '', image_url: '', link_url: '', category: 'Taller Práctico', modality: 'Presencial', duration: '', status: 'Inscripciones Abiertas', sort_order: 0 })
+  const [isEditingCourse, setIsEditingCourse] = useState(false)
 
   // Publication Form
   const [pubForm, setPubForm] = useState({ id: '', title: '', authors: '', journal_event: '', publication_year: new Date().getFullYear(), link_url: '', description: '', is_coil: false })
@@ -211,6 +217,55 @@ export default function DashboardClient({ initialData }: DashboardClientProps) {
     setIsEditingProj(false)
   }
 
+  // COURSE ACTIONS
+  const handleCourseSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    const res = await upsertCourse(courseForm)
+    if (res.success) {
+      showStatus('success', 'Curso/Taller guardado con éxito.')
+      const currentCourses = data.courses || []
+      const updatedCourses = isEditingCourse
+        ? currentCourses.map(item => item.id === courseForm.id ? { ...courseForm } : item)
+        : [...currentCourses, { ...courseForm, id: getTempId() }].sort((a,b) => (a.sort_order || 0) - (b.sort_order || 0))
+      setData({ ...data, courses: updatedCourses })
+      resetCourseForm()
+    } else {
+      showStatus('error', res.error || 'Error al guardar curso/taller.')
+    }
+  }
+
+  const handleEditCourse = (item: Course) => {
+    setCourseForm({
+      id: item.id || '',
+      title: item.title,
+      description: item.description,
+      image_url: item.image_url || '',
+      link_url: item.link_url || '',
+      category: item.category || 'Taller Práctico',
+      modality: item.modality || 'Presencial',
+      duration: item.duration || '',
+      status: item.status || '',
+      sort_order: item.sort_order || 0
+    })
+    setIsEditingCourse(true)
+  }
+
+  const handleDeleteCourse = async (id: string) => {
+    if (!confirm('¿Seguro que deseas eliminar este curso o taller?')) return
+    const res = await deleteCourse(id)
+    if (res.success) {
+      showStatus('success', 'Curso/Taller eliminado.')
+      setData({ ...data, courses: (data.courses || []).filter(item => item.id !== id) })
+    } else {
+      showStatus('error', res.error || 'Error al eliminar curso.')
+    }
+  }
+
+  const resetCourseForm = () => {
+    setCourseForm({ id: '', title: '', description: '', image_url: '', link_url: '', category: 'Taller Práctico', modality: 'Presencial', duration: '', status: 'Inscripciones Abiertas', sort_order: 0 })
+    setIsEditingCourse(false)
+  }
+
   // PUBLICATION ACTIONS
   const handlePubSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -309,6 +364,12 @@ export default function DashboardClient({ initialData }: DashboardClientProps) {
           className={`flex items-center gap-3 p-3 border-2 border-black transition-all text-left cursor-pointer active:translate-x-[2px] active:translate-y-[2px] active:shadow-none ${activeTab === 'projects' ? 'bg-brand-yellow text-black font-bold shadow-neo' : 'bg-white text-black hover:bg-zinc-50'}`}
         >
           <FolderGit2 size={14} /> Portafolio (Proyectos)
+        </button>
+        <button 
+          onClick={() => setActiveTab('courses')} 
+          className={`flex items-center gap-3 p-3 border-2 border-black transition-all text-left cursor-pointer active:translate-x-[2px] active:translate-y-[2px] active:shadow-none ${activeTab === 'courses' ? 'bg-brand-yellow text-black font-bold shadow-neo' : 'bg-white text-black hover:bg-zinc-50'}`}
+        >
+          <Presentation size={14} /> Cursos y Talleres
         </button>
         <button 
           onClick={() => setActiveTab('publications')} 
@@ -789,7 +850,162 @@ export default function DashboardClient({ initialData }: DashboardClientProps) {
           </div>
         )}
 
-        {/* TAB 5: PUBLICATIONS */}
+        {/* TAB 5: COURSES & WORKSHOPS */}
+        {activeTab === 'courses' && (
+          <div>
+            <h2 className="text-xl font-bold font-mono uppercase text-brand-pink mb-6 pb-2 border-b-2 border-black flex justify-between items-center">
+              <span className="flex items-center gap-2"><Presentation size={18} /> Cursos y Talleres</span>
+              {isEditingCourse && (
+                <button onClick={resetCourseForm} className="text-xs uppercase text-zinc-500 hover:text-black cursor-pointer">
+                  Cancelar Edición
+                </button>
+              )}
+            </h2>
+
+            {/* Form */}
+            <form onSubmit={handleCourseSubmit} className="bg-zinc-50 border-2 border-black p-6 mb-8 space-y-4 font-mono text-xs shadow-neo">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <label className="text-zinc-700 font-bold uppercase">Título del Curso o Taller</label>
+                  <input 
+                    type="text" 
+                    required
+                    value={courseForm.title}
+                    onChange={(e) => setCourseForm({ ...courseForm, title: e.target.value })}
+                    className="w-full bg-white border-2 border-black p-2.5 text-black focus:outline-none focus:border-brand-pink"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-zinc-700 font-bold uppercase">Categoría</label>
+                  <input 
+                    type="text" 
+                    required
+                    value={courseForm.category}
+                    onChange={(e) => setCourseForm({ ...courseForm, category: e.target.value })}
+                    className="w-full bg-white border-2 border-black p-2.5 text-black focus:outline-none focus:border-brand-pink"
+                    placeholder="Ej. Taller Práctico, Curso Avanzado, Diplomado"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                <div className="space-y-1">
+                  <label className="text-zinc-700 font-bold uppercase">Modalidad</label>
+                  <input 
+                    type="text" 
+                    value={courseForm.modality}
+                    onChange={(e) => setCourseForm({ ...courseForm, modality: e.target.value })}
+                    className="w-full bg-white border-2 border-black p-2.5 text-black focus:outline-none focus:border-brand-pink"
+                    placeholder="Ej. Presencial, Híbrido, Online"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-zinc-700 font-bold uppercase">Duración</label>
+                  <input 
+                    type="text" 
+                    value={courseForm.duration}
+                    onChange={(e) => setCourseForm({ ...courseForm, duration: e.target.value })}
+                    className="w-full bg-white border-2 border-black p-2.5 text-black focus:outline-none focus:border-brand-pink"
+                    placeholder="Ej. 30 Horas, 4 semanas"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-zinc-700 font-bold uppercase">Estado</label>
+                  <input 
+                    type="text" 
+                    value={courseForm.status}
+                    onChange={(e) => setCourseForm({ ...courseForm, status: e.target.value })}
+                    className="w-full bg-white border-2 border-black p-2.5 text-black focus:outline-none focus:border-brand-pink"
+                    placeholder="Ej. Inscripciones Abiertas, Activo"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-zinc-700 font-bold uppercase">Orden</label>
+                  <input 
+                    type="number" 
+                    value={courseForm.sort_order}
+                    onChange={(e) => setCourseForm({ ...courseForm, sort_order: parseInt(e.target.value) || 0 })}
+                    className="w-full bg-white border-2 border-black p-2.5 text-black focus:outline-none focus:border-brand-pink"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-zinc-700 font-bold uppercase">Link URL / Formulario de Registro</label>
+                <input 
+                  type="url" 
+                  value={courseForm.link_url}
+                  onChange={(e) => setCourseForm({ ...courseForm, link_url: e.target.value })}
+                  className="w-full bg-white border-2 border-black p-2.5 text-black focus:outline-none focus:border-brand-pink"
+                  placeholder="https://example.com/registro"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-zinc-700 font-bold uppercase">Descripción Detallada / Temario</label>
+                <textarea 
+                  rows={4}
+                  required
+                  value={courseForm.description}
+                  onChange={(e) => setCourseForm({ ...courseForm, description: e.target.value })}
+                  className="w-full bg-white border-2 border-black p-2.5 text-black focus:outline-none focus:border-brand-pink resize-none"
+                />
+              </div>
+
+              <button 
+                type="submit"
+                className="px-4 py-2.5 bg-brand-yellow hover:bg-black hover:text-white border-2 border-black text-black font-bold uppercase transition-all flex items-center gap-2 cursor-pointer shadow-neo hover:translate-x-[-2px] hover:translate-y-[-2px] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
+              >
+                {isEditingCourse ? <><Save size={12} /> Modificar</> : <><Plus size={12} /> Registrar Curso / Taller</>}
+              </button>
+            </form>
+
+            {/* List */}
+            <div className="space-y-4 font-mono text-xs">
+              {(data.courses || []).map((course) => (
+                <div key={course.id || course.title} className="border-2 border-black p-4 bg-white flex justify-between items-center gap-4 hover:shadow-neo hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span className="bg-brand-yellow text-black font-bold px-1.5 py-0.5 border border-black text-[9px] uppercase">
+                        {course.category}
+                      </span>
+                      {course.status && (
+                        <span className="text-brand-pink font-bold text-[9px] uppercase">
+                          ● {course.status}
+                        </span>
+                      )}
+                      {course.modality && (
+                        <span className="text-zinc-500 text-[10px]">
+                          [{course.modality}]
+                        </span>
+                      )}
+                    </div>
+                    <h4 className="font-bold text-black uppercase text-sm">{course.title}</h4>
+                    <p className="text-zinc-500 text-[11px] line-clamp-1">{course.description}</p>
+                  </div>
+                  <div className="flex gap-2 shrink-0">
+                    <button 
+                      onClick={() => handleEditCourse(course)}
+                      className="p-2 border-2 border-black text-black hover:bg-brand-pink hover:text-white cursor-pointer hover:shadow-neo active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all"
+                      title="Editar"
+                    >
+                      <Edit2 size={12} />
+                    </button>
+                    <button 
+                      onClick={() => course.id && handleDeleteCourse(course.id)}
+                      className="p-2 border-2 border-black text-black hover:bg-brand-pink hover:text-white cursor-pointer hover:shadow-neo active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all"
+                      title="Eliminar"
+                    >
+                      <Trash2 size={12} />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* TAB 6: PUBLICATIONS */}
         {activeTab === 'publications' && (
           <div>
             <h2 className="text-xl font-bold font-mono uppercase text-brand-pink mb-6 pb-2 border-b-2 border-black flex justify-between items-center">

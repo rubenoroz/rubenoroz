@@ -148,5 +148,18 @@
       "description": "Investigación académica internacional que describe el impacto del modelo COIL (Collaborative Online International Learning) aplicado a la producción de contenidos de televisión entre universidades de España y México.",
       "is_coil": true
     }
+  ],
+  "courses": [
+    {
+      "title": "De Cero a Internet",
+      "description": "Crea y publica tu sitio web con Inteligencia Artificial en 4 horas. Sin saber programar, sin complicarte: solo tú, tu idea, y una mañana. Sales con tu sitio web en línea listo para compartir.",
+      "image_url": "/images/de_cero_a_internet.png",
+      "link_url": "/cursos/de-cero-a-internet",
+      "category": "Taller Intensivo",
+      "modality": "Presencial / Online",
+      "duration": "4 Horas",
+      "status": "Cupos Limitados",
+      "sort_order": 1
+    }
   ]
 }

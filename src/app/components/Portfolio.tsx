@@ -1,12 +1,13 @@
 'use client'
 
 import React, { useState, useRef, useEffect } from 'react'
+import Link from 'next/link'
 import { 
   Tv, Music, Cpu, Mail, ExternalLink, FileText, 
   Menu, X, BookOpen, GraduationCap,
   Sparkles, Send
 } from 'lucide-react'
-import { PageData, Project } from '@/data/db'
+import { PageData, Project, Course } from '@/data/db'
 
 const getPlaceholderSvg = (width: number, height: number, text: string) => {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
@@ -105,6 +106,7 @@ interface PortfolioProps {
 export default function Portfolio({ data }: PortfolioProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [activeProject, setActiveProject] = useState<Project | null>(null)
+  const [activeCourse, setActiveCourse] = useState<Course | null>(null)
   const [currentSlide, setCurrentSlide] = useState(0)
 
   // Rotate hero background slides automatically
@@ -163,6 +165,7 @@ export default function Portfolio({ data }: PortfolioProps) {
     { href: '#skills', label: 'Competencias' },
     { href: '#timeline', label: 'Trayectoria' },
     { href: '#portfolio', label: 'Portafolio' },
+    { href: '#courses', label: 'Cursos y Talleres' },
     { href: '#research', label: 'Investigación' }
   ]
 
@@ -659,7 +662,7 @@ export default function Portfolio({ data }: PortfolioProps) {
                       <a 
                         href={project.link_url} 
                         target="_blank" 
-                        rel="noopener noreferrer"
+                        rel="noopener noreferrer" 
                         className="flex-1 py-3 text-brand-pink font-bold hover:bg-brand-yellow hover:text-black transition-all flex items-center justify-center gap-1"
                       >
                         VISITAR <ExternalLink size={12} />
@@ -672,8 +675,105 @@ export default function Portfolio({ data }: PortfolioProps) {
           </div>
         </section>
 
-        {/* SECTION 6: RESEARCH & PAPERS */}
-        <section id="research" className="py-20 px-6 md:p-20 border-b-2 border-black bg-white">
+        {/* SECTION 6: COURSES & WORKSHOPS */}
+        <section id="courses" className="py-20 px-6 md:p-20 border-b-2 border-black bg-white">
+          <div className="max-w-6xl">
+            <div className="font-mono text-xs text-brand-pink uppercase tracking-widest mb-2 font-bold">{"// CAPACITACIÓN & FORMACIÓN CONTINUA"}</div>
+            <h2 className="text-3xl sm:text-5xl font-bold uppercase tracking-tighter mb-8 font-sans">
+              Cursos y Talleres
+            </h2>
+
+            {/* Courses Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {(data.courses || []).map((course, index) => (
+                <div 
+                  key={index}
+                  className="bg-white border-2 border-black flex flex-col justify-between hover:shadow-neo hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all duration-300"
+                >
+                  {/* Course Image */}
+                  <div className="border-b-2 border-black bg-zinc-100 aspect-video relative flex items-center justify-center overflow-hidden select-none">
+                    <ImageWithPlaceholder 
+                      src={course.image_url} 
+                      alt={course.title} 
+                      dimensions="800 x 600 PX" 
+                      aspectRatioClass="aspect-video"
+                    />
+                  </div>
+
+                  <div className="p-6 flex-1 flex flex-col">
+                    <div className="flex flex-wrap justify-between items-center gap-2 mb-4">
+                      <span className="font-mono text-zinc-800 text-[10px] uppercase border border-zinc-300 px-2 py-0.5 bg-zinc-50 font-bold">
+                        {course.category}
+                      </span>
+                      {course.status && (
+                        <span className="font-mono text-brand-pink text-[10px] uppercase font-bold">
+                          ● {course.status}
+                        </span>
+                      )}
+                    </div>
+                    
+                    <h3 className="text-xl font-bold font-mono uppercase text-black mb-3 tracking-tight">
+                      {course.title}
+                    </h3>
+                    
+                    <p className="text-zinc-600 font-sans text-sm leading-relaxed mb-6 flex-1">
+                      {course.description.substring(0, 140)}
+                      {course.description.length > 140 ? '...' : ''}
+                    </p>
+
+                    {(course.modality || course.duration) && (
+                      <div className="flex flex-wrap items-center gap-3 pt-3 border-t border-dashed border-zinc-200 font-mono text-xs text-zinc-600 mb-2">
+                        {course.modality && (
+                          <span className="bg-zinc-100 px-2 py-0.5 border border-zinc-200 text-[11px]">
+                            {course.modality}
+                          </span>
+                        )}
+                        {course.duration && (
+                          <span className="bg-zinc-100 px-2 py-0.5 border border-zinc-200 text-[11px]">
+                            ⏱ {course.duration}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="border-t-2 border-black divide-x-2 divide-black flex font-mono text-xs text-center bg-zinc-50">
+                    {course.link_url && course.link_url.startsWith('/') ? (
+                      <Link 
+                        href={course.link_url}
+                        className="flex-1 py-3 bg-brand-yellow text-black font-bold hover:bg-black hover:text-white transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-[inset_0_-2px_0_rgba(0,0,0,0.1)]"
+                      >
+                        VER DETALLES DEL TALLER <ExternalLink size={13} />
+                      </Link>
+                    ) : (
+                      <>
+                        <button 
+                          onClick={() => setActiveCourse(course)}
+                          className="flex-1 py-3 text-black font-bold hover:bg-brand-pink hover:text-white transition-all cursor-pointer"
+                        >
+                          DETALLES
+                        </button>
+                        {course.link_url && (
+                          <a 
+                            href={course.link_url} 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="flex-1 py-3 text-brand-pink font-bold hover:bg-brand-yellow hover:text-black transition-all flex items-center justify-center gap-1"
+                          >
+                            MÁS INFO <ExternalLink size={12} />
+                          </a>
+                        )}
+                      </>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* SECTION 7: RESEARCH & PAPERS */}
+        <section id="research" className="py-20 px-6 md:p-20 border-b-2 border-black bg-zinc-50">
           <div className="max-w-6xl">
             <div className="font-mono text-xs text-brand-pink uppercase tracking-widest mb-2 font-bold">{"// INVESTIGACIÓN CURRICULAR"}</div>
             <h2 className="text-3xl sm:text-5xl font-bold uppercase tracking-tighter mb-10 font-sans">
@@ -777,6 +877,66 @@ export default function Portfolio({ data }: PortfolioProps) {
                     className="py-3 px-6 bg-brand-yellow text-black font-bold flex items-center gap-2 border-2 border-black hover:bg-black hover:text-white transition-all shadow-neo"
                   >
                     VISITAR SITIO WEB <ExternalLink size={14} />
+                  </a>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* COURSE DETAILS MODAL */}
+      {activeCourse && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
+          <div className="bg-white border-2 border-black max-w-2xl w-full flex flex-col font-mono text-sm max-h-[90vh] overflow-y-auto shadow-neo">
+            {/* Modal Title bar */}
+            <div className="border-b-2 border-black p-4 flex justify-between items-center bg-zinc-50">
+              <span className="text-brand-pink uppercase font-bold text-xs tracking-wider">{"COURSE // SPECIFICATION"}</span>
+              <button 
+                onClick={() => setActiveCourse(null)} 
+                className="p-1 hover:bg-zinc-200 border-2 border-transparent hover:border-black text-zinc-600 hover:text-black cursor-pointer"
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-6 space-y-6">
+              <div>
+                <h3 className="text-2xl font-bold font-mono uppercase text-black tracking-tight mb-2">
+                  {activeCourse.title}
+                </h3>
+                <div className="flex flex-wrap gap-2 text-zinc-500 uppercase text-xs">
+                  <span>CATEGORÍA: {activeCourse.category}</span>
+                  {activeCourse.modality && <span>| MODALIDAD: {activeCourse.modality}</span>}
+                  {activeCourse.duration && <span>| DURACIÓN: {activeCourse.duration}</span>}
+                  {activeCourse.status && <span>| ESTADO: {activeCourse.status}</span>}
+                </div>
+              </div>
+
+              {/* Modal Course Showcase Image */}
+              <div className="border-2 border-black bg-zinc-100 aspect-[3/2] relative flex items-center justify-center overflow-hidden shadow-neo">
+                <ImageWithPlaceholder 
+                  src={activeCourse.image_url} 
+                  alt={activeCourse.title} 
+                  dimensions="1200 x 800 PX" 
+                  aspectRatioClass="aspect-[3/2]"
+                />
+              </div>
+
+              <div className="border-l-4 border-brand-yellow pl-4 font-sans text-zinc-700 leading-relaxed text-base">
+                {activeCourse.description}
+              </div>
+
+              {activeCourse.link_url && (
+                <div className="border-t border-zinc-200 pt-4 flex">
+                  <a 
+                    href={activeCourse.link_url} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="py-3 px-6 bg-brand-yellow text-black font-bold flex items-center gap-2 border-2 border-black hover:bg-black hover:text-white transition-all shadow-neo"
+                  >
+                    MÁS INFORMACIÓN / REGISTRO <ExternalLink size={14} />
                   </a>
                 </div>
               )}

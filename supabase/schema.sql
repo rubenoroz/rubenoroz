@@ -95,7 +95,33 @@ create policy "Allow public read access to projects" on projects
 create policy "Allow authenticated admin manage projects" on projects
   for all using (auth.role() = 'authenticated');
 
--- 5. Publications Table
+-- 5. Courses Table
+create table if not exists courses (
+  id uuid default gen_random_uuid() primary key,
+  profile_id uuid references profiles(id) on delete cascade not null,
+  title text not null,
+  description text not null,
+  image_url text,
+  link_url text,
+  category text not null, -- 'Taller Práctico', 'Curso Avanzado', 'Diplomado', 'Masterclass'
+  modality text, -- 'Presencial', 'Online', 'Híbrido'
+  duration text,
+  status text,
+  sort_order integer default 0,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+-- Enable RLS for courses
+alter table courses enable row level security;
+
+-- Policies for courses
+create policy "Allow public read access to courses" on courses
+  for select using (true);
+
+create policy "Allow authenticated admin manage courses" on courses
+  for all using (auth.role() = 'authenticated');
+
+-- 6. Publications Table
 create table if not exists publications (
   id uuid default gen_random_uuid() primary key,
   profile_id uuid references profiles(id) on delete cascade not null,

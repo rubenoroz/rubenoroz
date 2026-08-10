@@ -16,6 +16,7 @@ export default async function DashboardPage() {
     expRes,
     eduRes,
     projRes,
+    courseRes,
     pubRes,
     msgRes
   ] = await Promise.all([
@@ -23,6 +24,7 @@ export default async function DashboardPage() {
     supabase.from('experiences').select('*').order('created_at', { ascending: false }),
     supabase.from('education').select('*').order('created_at', { ascending: false }),
     supabase.from('projects').select('*').order('sort_order', { ascending: true }),
+    supabase.from('courses').select('*').order('sort_order', { ascending: true }),
     supabase.from('publications').select('*').order('publication_year', { ascending: false }),
     supabase.from('messages').select('*').order('created_at', { ascending: false })
   ])
@@ -46,6 +48,7 @@ export default async function DashboardPage() {
         experiences: expRes.data || [],
         education: eduRes.data || [],
         projects: projRes.data || [],
+        courses: courseRes.data || [],
         publications: pubRes.data || [],
         messages: msgRes.data || []
       }}

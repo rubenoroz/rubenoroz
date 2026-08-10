@@ -54,6 +54,19 @@ export interface Publication {
   is_coil: boolean
 }
 
+export interface Course {
+  id?: string
+  title: string
+  description: string
+  image_url?: string
+  link_url?: string
+  category: string
+  modality?: string
+  duration?: string
+  status?: string
+  sort_order?: number
+}
+
 export interface Message {
   id: string
   name: string
@@ -69,6 +82,7 @@ export interface PageData {
   experiences: Experience[]
   education: Education[]
   projects: Project[]
+  courses: Course[]
   publications: Publication[]
 }
 
@@ -88,12 +102,14 @@ export async function getPageData(): Promise<PageData> {
       expRes,
       eduRes,
       projRes,
+      coursesRes,
       pubRes
     ] = await Promise.all([
       supabase.from('profiles').select('*').maybeSingle(),
       supabase.from('experiences').select('*').order('created_at', { ascending: false }),
       supabase.from('education').select('*').order('created_at', { ascending: false }),
       supabase.from('projects').select('*').order('sort_order', { ascending: true }),
+      supabase.from('courses').select('*').order('sort_order', { ascending: true }),
       supabase.from('publications').select('*').order('publication_year', { ascending: false })
     ])
 
@@ -107,6 +123,7 @@ export async function getPageData(): Promise<PageData> {
       experiences: (expRes.data || []) as Experience[],
       education: (eduRes.data || []) as Education[],
       projects: (projRes.data || []) as Project[],
+      courses: (coursesRes.data && coursesRes.data.length > 0 ? coursesRes.data : fallbackData.courses || []) as Course[],
       publications: (pubRes.data || []) as Publication[]
     }
   } catch (error) {
