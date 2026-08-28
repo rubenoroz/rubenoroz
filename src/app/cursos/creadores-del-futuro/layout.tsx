@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Creadores del Futuro · Curso de Verano Modular de 8 Semanas | Rubén Oroz',
-  description: 'Programa de verano de tecnología, creatividad, IA y producción para niños y jóvenes (6 a 15 años). Videojuegos, cine, páginas web, música, inventores y estudio de TV.',
+  description: 'Programa de verano de tecnología, creatividad, IA y producción para niños y jóvenes (9 a 17 años). Videojuegos, cine, páginas web, música, inventores y estudio de TV.',
   openGraph: {
     title: 'Creadores del Futuro · Curso de Verano Modular (8 Semanas) | Rubén Oroz',
     description: '¡Cada día un proyecto terminado! 8 semanas independientes: Videojuegos, Cine con IA, Páginas Web, Música, Inventores, Estudio de TV y Superhéroes.',

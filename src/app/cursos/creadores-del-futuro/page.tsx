@@ -172,7 +172,7 @@ export default function CreadoresDelFuturoPage() {
           </Link>
           <div className="flex items-center gap-3 font-mono text-xs">
             <span className="hidden sm:inline bg-brand-yellow px-2 py-0.5 border border-black font-bold">
-              VERANO MODULAR · 6 A 15 AÑOS
+              VERANO MODULAR · 9 A 17 AÑOS
             </span>
             <a 
               href={waUrlBook}
@@ -213,7 +213,7 @@ export default function CreadoresDelFuturoPage() {
               <div className="text-zinc-500 font-bold uppercase flex items-center gap-1.5 mb-1">
                 <Users size={14} className="text-brand-pink" /> Edades
               </div>
-              <div className="text-base font-extrabold text-black">6 a 15 Años</div>
+              <div className="text-base font-extrabold text-black">9 a 17 Años</div>
               <div className="text-[11px] text-zinc-600">3 Grupos por nivel</div>
             </div>
 
@@ -249,33 +249,33 @@ export default function CreadoresDelFuturoPage() {
             <div className="space-y-2 border-b md:border-b-0 md:border-r border-zinc-800 pb-4 md:pb-0 md:pr-4">
               <div className="flex items-center justify-between">
                 <span className="bg-brand-yellow text-black font-bold px-2 py-0.5 text-xs">GRUPO 1</span>
-                <span className="text-zinc-400 text-xs">6 a 8 años</span>
+                <span className="text-zinc-400 text-xs">9 a 11 años</span>
               </div>
-              <h3 className="font-bold text-lg text-white uppercase">Descubrimiento & Juego</h3>
+              <h3 className="font-bold text-lg text-white uppercase">Descubrimiento & Lógica</h3>
               <p className="text-xs text-zinc-300 font-sans leading-relaxed">
-                Prioriza narración, dibujo, actuación, voz, música y creación guiada. Menos interfaces complejas y más juego creativo con tecnología amigable.
+                Prioriza creatividad, narración, dibujo digital, música, prompts guiados y primeros conceptos de programación y diseño.
               </p>
             </div>
 
             <div className="space-y-2 border-b md:border-b-0 md:border-r border-zinc-800 pb-4 md:pb-0 md:pr-4">
               <div className="flex items-center justify-between">
                 <span className="bg-brand-yellow text-black font-bold px-2 py-0.5 text-xs">GRUPO 2</span>
-                <span className="text-zinc-400 text-xs">9 a 11 años</span>
+                <span className="text-zinc-400 text-xs">12 a 14 años</span>
               </div>
-              <h3 className="font-bold text-lg text-white uppercase">Creación & Lógica</h3>
+              <h3 className="font-bold text-lg text-white uppercase">Creación & Producción</h3>
               <p className="text-xs text-zinc-300 font-sans leading-relaxed">
-                Equilibrio entre imaginación y comprensión técnica: prompts estructurados, diseño de niveles, edición sencilla de video y prototipos web.
+                Equilibrio entre diseño y control técnico: prompts estructurados, diseño de niveles en videojuegos, edición de video y páginas web interactivas.
               </p>
             </div>
 
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <span className="bg-brand-yellow text-black font-bold px-2 py-0.5 text-xs">GRUPO 3</span>
-                <span className="text-zinc-400 text-xs">12 a 15 años</span>
+                <span className="text-zinc-400 text-xs">15 a 17 años</span>
               </div>
-              <h3 className="font-bold text-lg text-white uppercase">Autonomía & Producción</h3>
+              <h3 className="font-bold text-lg text-white uppercase">Autonomía & Proyectos Pro</h3>
               <p className="text-xs text-zinc-300 font-sans leading-relaxed">
-                Mayor control técnico: pipeline audiovisual, desarrollo web con código, diseño de mecánicas de juego avanzadas y proyectos para portafolio.
+                Mayor profundidad técnica: pipeline audiovisual completo, desarrollo web con código, mecánicas de juego avanzadas y proyectos para portafolio.
               </p>
             </div>
           </div>
@@ -553,7 +553,7 @@ export default function CreadoresDelFuturoPage() {
                 ¿Se necesita experiencia previa en computación?
               </h4>
               <p className="text-zinc-600 font-sans text-xs leading-relaxed">
-                Ninguna. Los grupos están divididos por edades (6-8, 9-11 y 12-15) y las actividades inician desde los conceptos más sencillos y lúdicos con acompañamiento continuo.
+                Ninguna. Los grupos están divididos por edades (9-11, 12-14 y 15-17 años) y las actividades inician desde los conceptos más sencillos y lúdicos con acompañamiento continuo.
               </p>
             </div>
 
