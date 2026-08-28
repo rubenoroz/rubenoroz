@@ -2941,7 +2941,6 @@ window.addEventListener('keydown',e=>{
 if(state==='title'&&!songName&&(e.code==='Enter'||e.code==='Space'||e.code==='ArrowLeft'||e.code==='ArrowRight'))startMusic('title');
 if(HANDLED.has(e.code))e.preventDefault();
 keys[e.code]=true;
-if(e.code!=='KeyF'&&e.code!=='Escape')requestFs();
 if((e.code==='Space'||e.code==='ArrowUp'||e.code==='KeyW')&&!e.repeat)jumpBufT=8;
 
 if(e.code==='KeyL'){

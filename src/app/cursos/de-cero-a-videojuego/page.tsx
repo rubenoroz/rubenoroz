@@ -35,14 +35,15 @@ export default function DeCeroAVideojuegoPage() {
 
   const handleStartGame = (openFullscreen = false) => {
     setIsGameActive(true)
-    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
-    if (openFullscreen || isMobile) {
+    if (openFullscreen) {
       setIsFullscreenMode(true)
       try {
         if (document.documentElement.requestFullscreen) {
           document.documentElement.requestFullscreen().catch(() => {})
         }
       } catch (err) {}
+    } else {
+      setIsFullscreenMode(false)
     }
     focusGame()
   }
@@ -325,21 +326,21 @@ export default function DeCeroAVideojuegoPage() {
                     </h3>
                     
                     <p className="text-zinc-300 font-mono text-[11px] sm:text-xs max-w-sm mx-auto leading-relaxed px-2">
-                      Presiona para cargar el juego y activar el audio retro. En móviles se abre en pantalla completa.
+                      Presiona para cargar el juego y activar el audio retro.
                     </p>
 
                     <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-2.5">
                       <button
-                        onClick={() => handleStartGame(true)}
+                        onClick={() => handleStartGame(false)}
                         className="w-full sm:w-auto px-6 py-3.5 bg-brand-yellow text-black font-mono font-bold text-xs sm:text-sm border-2 border-white hover:bg-[#25d366] hover:text-black transition-all flex items-center justify-center gap-2 shadow-[3px_3px_0px_#fff] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none cursor-pointer"
                       >
-                        <Maximize2 size={16} /> ▶ JUGAR EN FULLSCREEN
+                        <Volume2 size={16} /> ▶ CLIC PARA JUGAR
                       </button>
                       <button
-                        onClick={() => handleStartGame(false)}
-                        className="hidden sm:inline-flex w-full sm:w-auto px-4 py-3 bg-zinc-900 text-white font-mono font-bold text-xs border border-zinc-500 hover:bg-white hover:text-black transition-all items-center justify-center gap-1.5 cursor-pointer"
+                        onClick={() => handleStartGame(true)}
+                        className="w-full sm:w-auto px-4 py-3.5 bg-zinc-900 text-white font-mono font-bold text-xs sm:text-sm border border-zinc-500 hover:bg-white hover:text-black transition-all flex items-center justify-center gap-1.5 cursor-pointer"
                       >
-                        <Volume2 size={15} /> Jugar aquí
+                        <Maximize2 size={14} /> Pantalla completa
                       </button>
                     </div>
                   </div>
