@@ -396,9 +396,9 @@ export default function DeCeroAVideojuegoPage() {
                 </div>
 
                 <div className="border border-zinc-800 bg-zinc-950 p-2.5">
-                  <div className="text-brand-yellow font-bold mb-1">🗺️ NIVELES & MÚSICA</div>
-                  <div className="text-zinc-400">[L] Niveles · [M] Música</div>
-                  <div className="text-[10px] text-zinc-500 mt-0.5">Selector de niveles directo</div>
+                  <div className="text-brand-yellow font-bold mb-1">🎵 AUDIO & PAUSA</div>
+                  <div className="text-zinc-400">[M] Música · [P] Pausa</div>
+                  <div className="text-[10px] text-zinc-500 mt-0.5">Control de sonido retro</div>
                 </div>
 
                 <div className="border border-zinc-800 bg-zinc-950 p-2.5">

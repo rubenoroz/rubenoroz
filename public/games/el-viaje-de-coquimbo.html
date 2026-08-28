@@ -2944,14 +2944,14 @@ keys[e.code]=true;
 if(e.code!=='KeyF'&&e.code!=='Escape')requestFs();
 if((e.code==='Space'||e.code==='ArrowUp'||e.code==='KeyW')&&!e.repeat)jumpBufT=8;
 const st=state;
-if(state==='title'&&e.code==='KeyL'){state='lvlsel'}
+if(e.code==='KeyL'){state=state==='lvlsel'?'title':'lvlsel'}
 else if(state==='title'&&/^Digit[1-8]$/.test(e.code)){startLevel(Number(e.code.slice(5)))}
 else if(state==='lvlsel'){
 if(e.code==='ArrowLeft'||e.code==='KeyA')lvSel=lvSel===1?16:lvSel-1;
 else if(e.code==='ArrowRight'||e.code==='KeyD')lvSel=lvSel===16?1:lvSel+1;
 else if(e.code==='ArrowUp'||e.code==='KeyW')lvSel=lvSel>4?lvSel-4:lvSel+12;
 else if(e.code==='ArrowDown'||e.code==='KeyS')lvSel=lvSel<=12?lvSel+4:lvSel-12;
-else if(e.code==='Escape'||e.code==='KeyL'||e.code==='KeyQ'){state='title'}
+else if(e.code==='Escape'||e.code==='KeyQ'){state='title'}
 else if(e.code==='Enter'||e.code==='Space')pressEnter();
 }
 if(e.code==='Enter'&&state!=='lvlsel')pressEnter();
