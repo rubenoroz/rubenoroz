@@ -160,6 +160,17 @@
       "duration": "4 Horas",
       "status": "Cupos Limitados",
       "sort_order": 1
+    },
+    {
+      "title": "De Cero a Videojuego",
+      "description": "Diseña, programa, sonoriza y publica tu propio videojuego de plataformas con IA en 4 horas. Sin experiencia previa. Sales con un juego real publicado en internet.",
+      "image_url": "/images/de_cero_a_videojuego.png",
+      "link_url": "/cursos/de-cero-a-videojuego",
+      "category": "Taller Intensivo",
+      "modality": "Presencial / Online",
+      "duration": "4 Horas",
+      "status": "Cupos Limitados",
+      "sort_order": 2
     }
   ]
 }
