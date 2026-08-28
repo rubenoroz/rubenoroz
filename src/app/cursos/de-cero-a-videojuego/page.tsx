@@ -21,6 +21,18 @@ export default function DeCeroAVideojuegoPage() {
   const waUrlPersonal = 'https://wa.me/523335769348?text=Hola%2C%20quiero%20m%C3%A1s%20informaci%C3%B3n%20sobre%20el%20curso%20personal%20o%20asesor%C3%ADa%201%20a%201%20de%20%22De%20Cero%20a%20Videojuego%22.'
   const waUrlBook = 'https://wa.me/523335769348?text=Hola%2C%20quiero%20apartar%20mi%20lugar%20en%20el%20taller%20%22De%20Cero%20a%20Videojuego%22.'
 
+  const focusGame = () => {
+    setTimeout(() => {
+      try {
+        const iframe = fullscreenIframeRef.current || iframeRef.current
+        if (iframe) {
+          iframe.focus()
+          iframe.contentWindow?.focus()
+        }
+      } catch (e) {}
+    }, 120)
+  }
+
   const handleStartGame = (openFullscreen = false) => {
     setIsGameActive(true)
     const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
@@ -32,11 +44,13 @@ export default function DeCeroAVideojuegoPage() {
         }
       } catch (err) {}
     }
+    focusGame()
   }
 
   const handleRestartGame = () => {
     setIsGameActive(true)
     setGameKey(prev => prev + 1)
+    focusGame()
   }
 
   const handleToggleFullscreen = () => {
@@ -58,6 +72,7 @@ export default function DeCeroAVideojuegoPage() {
       }
       return nextState
     })
+    focusGame()
   }
 
   const handleExitFullscreen = () => {

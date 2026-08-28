@@ -2943,35 +2943,63 @@ if(HANDLED.has(e.code))e.preventDefault();
 keys[e.code]=true;
 if(e.code!=='KeyF'&&e.code!=='Escape')requestFs();
 if((e.code==='Space'||e.code==='ArrowUp'||e.code==='KeyW')&&!e.repeat)jumpBufT=8;
-const st=state;
-if(e.code==='KeyL'){state=state==='lvlsel'?'title':'lvlsel'}
-else if(state==='title'&&/^Digit[1-8]$/.test(e.code)){startLevel(Number(e.code.slice(5)))}
-else if(state==='lvlsel'){
+
+if(e.code==='KeyL'){
+state=state==='lvlsel'?'title':'lvlsel';
+return;
+}
+
+if(state==='title'&&/^Digit[1-8]$/.test(e.code)){startLevel(Number(e.code.slice(5)));return}
+
+if(state==='lvlsel'){
 if(e.code==='ArrowLeft'||e.code==='KeyA')lvSel=lvSel===1?16:lvSel-1;
 else if(e.code==='ArrowRight'||e.code==='KeyD')lvSel=lvSel===16?1:lvSel+1;
 else if(e.code==='ArrowUp'||e.code==='KeyW')lvSel=lvSel>4?lvSel-4:lvSel+12;
 else if(e.code==='ArrowDown'||e.code==='KeyS')lvSel=lvSel<=12?lvSel+4:lvSel-12;
 else if(e.code==='Escape'||e.code==='KeyQ'){state='title'}
-else if(e.code==='Enter'||e.code==='Space')pressEnter();
+else if(e.code==='Enter'||e.code==='Space'){startLevel(lvSel)}
+return;
 }
-if(e.code==='Enter'&&state!=='lvlsel')pressEnter();
-if(st==='select'){
+
+if(state==='select'){
 if(e.code==='ArrowLeft'||e.code==='KeyA')selColor='green';
-if(e.code==='ArrowRight'||e.code==='KeyD')selColor='blue';
-if(e.code==='Space'&&state==='select')confirmSelect();
+else if(e.code==='ArrowRight'||e.code==='KeyD')selColor='blue';
+else if(e.code==='Space'||e.code==='Enter')confirmSelect();
+return;
 }
+
+if(e.code==='Enter')pressEnter();
 if(e.code==='KeyM'){toggleMusic();if(musicOn&&!songName)startMusic(state==='title'?'title':levelSong())}
 if(e.code==='KeyP'&&state==='playing')paused=!paused;
 if(e.code==='KeyR'&&state==='playing')resetLevel();
-if(e.code==='KeyF')
-toggleFullscreen();
+if(e.code==='KeyF')toggleFullscreen();
 });
 window.addEventListener('keyup',e=>{keys[e.code]=false});
 window.addEventListener('blur',()=>{for(const k in keys)keys[k]=false});
-canvas.addEventListener('click',()=>{
-  ac();
-  if(state==='title') pressEnter();
+
+function mPos(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)/r.width*VW,y:(e.clientY-r.top)/r.height*VH}}
+
+canvas.addEventListener('click',e=>{
+window.focus();
+ac();
+const p=mPos(e);
+if(state==='title'){
+pressEnter();
+}else if(state==='select'){
+selColor=p.x<VW/2?'green':'blue';
+confirmSelect();
+}else if(state==='lvlsel'){
+const bx=lvBoxes();
+for(let i=0;i<16;i++){
+const r=bx.rect(i);
+if(p.x>=r.x&&p.x<=r.x+r.w&&p.y>=r.y&&p.y<=r.y+r.h){startLevel(i+1);break}
+}
+}else if(state==='gameover'||state==='win'){
+pressEnter();
+}
 });
+canvas.addEventListener('mouseenter',()=>{window.focus()});
+window.addEventListener('load',()=>{window.focus()});
 
 const touchUI=('ontouchstart' in window)||(typeof navigator!=='undefined'&&navigator.maxTouchPoints>0);
 let joyId=null,joyX0=0,joyDX=0,jumpId=null,fireId=null,crouchId=null;
