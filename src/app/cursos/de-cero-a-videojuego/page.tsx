@@ -88,32 +88,33 @@ export default function DeCeroAVideojuegoPage() {
   return (
     <div className="min-h-screen bg-background text-foreground tech-grid flex flex-col">
       
-      {/* TOPBAR / STICKY HEADER */}
-      <header className="sticky top-0 z-50 bg-white border-b-2 border-black py-3 px-6 md:px-12 flex items-center justify-between shadow-sm">
-        <Link 
-          href="/#courses"
-          className="inline-flex items-center gap-2 font-mono text-xs font-bold text-black hover:text-brand-pink border-2 border-black px-3 py-1.5 bg-zinc-50 hover:bg-brand-yellow hover:shadow-neo active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all cursor-pointer"
-        >
-          <ArrowLeft size={14} /> VOLVER AL PORTAFOLIO
-        </Link>
-        
-        <div className="flex items-center gap-3">
-          <span className="hidden sm:inline-block font-mono text-[11px] font-bold uppercase tracking-wider bg-brand-yellow border-2 border-black px-2.5 py-1 text-black shadow-[1px_1px_0px_#000]">
-            Taller Presencial / Online
-          </span>
-          <a
-            href={waUrlGroup}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-mono text-xs font-bold bg-[#25d366] text-black border-2 border-black px-3 py-1.5 hover:bg-black hover:text-white transition-all flex items-center gap-1.5 shadow-neo active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
+      {/* Top sticky navigation */}
+      <header className="border-b-2 border-black bg-white sticky top-0 z-40">
+        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+          <Link 
+            href="/#courses" 
+            className="inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-wider text-black hover:text-brand-pink transition-colors"
           >
-            <MessageCircle size={14} /> WHATSAPP
-          </a>
+            <ArrowLeft size={16} /> Volver a cursos
+          </Link>
+          <div className="flex items-center gap-3 font-mono text-xs">
+            <span className="hidden sm:inline bg-brand-yellow px-2 py-0.5 border border-black font-bold">
+              4 HORAS · INTENSIVO
+            </span>
+            <a 
+              href={waUrlBook}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3 py-1 bg-black text-white hover:bg-brand-pink font-bold border-2 border-black transition-all flex items-center gap-1.5 shadow-[2px_2px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
+            >
+              <MessageCircle size={14} /> APARTAR LUGAR
+            </a>
+          </div>
         </div>
       </header>
 
       {/* MAIN CONTAINER */}
-      <main className="flex-1 max-w-5xl w-full mx-auto px-6 py-12 md:py-16 space-y-16">
+      <main className="max-w-6xl mx-auto px-4 py-8 sm:py-12 space-y-16 flex-1 w-full">
 
         {/* HERO SECTION */}
         <section className="space-y-8">
