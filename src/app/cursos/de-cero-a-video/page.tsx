@@ -101,6 +101,41 @@ ${currentShot.promptMotion}`
     setTimeout(() => setCopiedShotPrompt(false), 2000)
   }
 
+  // Showcase Videos State
+  const showcaseVideos = [
+    {
+      id: 'WqdS1X3Bnx4',
+      title: 'Video Showcase 01',
+      tag: 'PRODUCCIÓN COMPLETA',
+      desc: 'Flujo cinematográfico: consistencia de personajes, iluminación y dirección de cámara.',
+      url: 'https://www.youtube.com/watch?v=WqdS1X3Bnx4&list=RDWqdS1X3Bnx4&start_radio=1',
+    },
+    {
+      id: 'ToUMn7eiri8',
+      title: 'Video Showcase 02',
+      tag: 'ATMÓSFERA & KEYFRAMES',
+      desc: 'Planos cinemáticos, ritmo visual y sincronización de música y diseño sonoro.',
+      url: 'https://www.youtube.com/watch?v=ToUMn7eiri8&list=RDToUMn7eiri8&start_radio=1',
+    },
+    {
+      id: 'r5zd0FDaIG8',
+      title: 'Video Showcase 03',
+      tag: 'DIRECCIÓN DE ARTE',
+      desc: 'Generación imagen-a-video con control estricto de estilo, color y movimientos fluidos.',
+      url: 'https://www.youtube.com/watch?v=r5zd0FDaIG8&list=RDr5zd0FDaIG8&start_radio=1',
+    },
+    {
+      id: 'ohtq_j_RAAs',
+      title: 'Video Showcase 04',
+      tag: 'NARRATIVA & EDICIÓN',
+      desc: 'Integración de planos generativos con locución en off, foley y montaje final.',
+      url: 'https://www.youtube.com/watch?v=ohtq_j_RAAs&list=RDohtq_j_RAAs&start_radio=1',
+    },
+  ]
+
+  const [selectedVideoId, setSelectedVideoId] = useState<string>('WqdS1X3Bnx4')
+  const currentVideo = showcaseVideos.find(v => v.id === selectedVideoId) || showcaseVideos[0]
+
   return (
     <div className="min-h-screen bg-background text-foreground tech-grid flex flex-col">
       {/* Top sticky navigation */}
@@ -216,6 +251,117 @@ ${currentShot.promptMotion}`
               <p className="text-xs text-zinc-300 font-sans leading-relaxed">
                 Integra las 3 capas: Voz en off sintetizada, música con función emocional y efectos sonoros que dan credibilidad al corte directo.
               </p>
+            </div>
+          </div>
+        </section>
+
+        {/* INTERACTIVE VIDEO SHOWCASE & SELECTOR */}
+        <section id="video-showcase" className="space-y-6 pt-8 border-t-2 border-black">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div>
+              <span className="font-mono text-xs text-brand-pink uppercase tracking-widest font-bold">
+                {"// SHOWCASE AUDIOVISUAL · PRODUCCIONES CON IA"}
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-extrabold uppercase tracking-tight font-sans mt-1">
+                Galería & Selector de Videos
+              </h2>
+              <p className="text-zinc-600 font-sans text-base mt-1 max-w-2xl">
+                Selecciona cualquiera de las 4 piezas para reproducirla y observar la calidad de textura, movimiento de cámara y ritmo cinematográfico.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2 font-mono text-xs">
+              <span className="px-2.5 py-1 bg-black text-brand-yellow font-bold border border-black flex items-center gap-1.5">
+                <Play size={13} fill="currentColor" /> 4 VIDEOS DISPONIBLES
+              </span>
+            </div>
+          </div>
+
+          {/* Video Player Frame */}
+          <div className="border-4 border-black bg-zinc-950 p-4 sm:p-6 shadow-neo text-white">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+              
+              {/* Main Player (16:9 Aspect Ratio) */}
+              <div className="lg:col-span-8 space-y-3">
+                <div className="relative w-full aspect-video border-2 border-zinc-800 bg-black overflow-hidden shadow-inner">
+                  <iframe
+                    key={selectedVideoId}
+                    src={`https://www.youtube-nocookie.com/embed/${selectedVideoId}?rel=0&modestbranding=1&playsinline=1`}
+                    title={currentVideo.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    className="absolute top-0 left-0 w-full h-full border-0"
+                  />
+                </div>
+
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between border-t border-zinc-800 pt-3 gap-2 font-mono text-xs">
+                  <div>
+                    <span className="text-brand-yellow font-bold uppercase">{currentVideo.tag}</span>
+                    <h3 className="text-base font-bold text-white mt-0.5">{currentVideo.title}</h3>
+                    <p className="text-zinc-400 text-[11px] font-sans mt-0.5">{currentVideo.desc}</p>
+                  </div>
+                  <a
+                    href={currentVideo.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="shrink-0 px-3 py-1.5 bg-zinc-900 border border-zinc-700 hover:bg-brand-pink hover:text-white transition-all flex items-center gap-1.5 text-[11px] font-bold text-zinc-300"
+                  >
+                    <ExternalLink size={13} /> Ver en YouTube
+                  </a>
+                </div>
+              </div>
+
+              {/* Video Selector List */}
+              <div className="lg:col-span-4 space-y-2.5 flex flex-col justify-between">
+                <div className="space-y-2">
+                  <div className="font-mono text-xs font-bold text-zinc-400 border-b border-zinc-800 pb-2 flex items-center gap-1.5">
+                    <Film size={14} className="text-brand-yellow" /> SELECCIONA UN VIDEO
+                  </div>
+
+                  <div className="space-y-2">
+                    {showcaseVideos.map((vid, idx) => {
+                      const isSelected = vid.id === selectedVideoId
+                      return (
+                        <button
+                          key={vid.id}
+                          onClick={() => setSelectedVideoId(vid.id)}
+                          className={`w-full p-2.5 border-2 text-left transition-all cursor-pointer flex items-center gap-3 ${
+                            isSelected
+                              ? 'bg-brand-yellow text-black border-white shadow-[2px_2px_0px_#fff]'
+                              : 'bg-zinc-900 text-zinc-300 border-zinc-800 hover:border-zinc-600 hover:text-white'
+                          }`}
+                        >
+                          <div className="w-16 h-11 relative bg-black shrink-0 border border-black/40 overflow-hidden">
+                            <img
+                              src={`https://img.youtube.com/vi/${vid.id}/hqdefault.jpg`}
+                              alt={vid.title}
+                              className="w-full h-full object-cover"
+                            />
+                            <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                              <Play size={14} className={isSelected ? 'text-black fill-black' : 'text-white fill-white'} />
+                            </div>
+                          </div>
+
+                          <div className="flex-1 min-w-0 font-mono">
+                            <div className="flex justify-between items-center text-[10px]">
+                              <span className={`font-bold ${isSelected ? 'text-black' : 'text-brand-pink'}`}>
+                                0{idx + 1}
+                              </span>
+                              <span className="text-[9px] uppercase opacity-75">{vid.tag.split(' ')[0]}</span>
+                            </div>
+                            <div className="font-bold text-xs truncate mt-0.5">{vid.title}</div>
+                          </div>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+
+                <div className="p-3 bg-zinc-900 border border-zinc-800 font-mono text-[11px] text-zinc-400">
+                  <span className="text-emerald-400 font-bold">★ Pipeline del Taller:</span> Aprende a producir piezas como estas en 4 horas con prompts de movimiento y keyframes consistentes.
+                </div>
+              </div>
+
             </div>
           </div>
         </section>
