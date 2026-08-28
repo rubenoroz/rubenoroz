@@ -231,30 +231,30 @@ export default function DeCeroAVideojuegoPage() {
               </p>
             </div>
 
-            <div className="flex items-center gap-2 font-mono text-xs">
+            <div className="grid grid-cols-3 sm:flex items-center gap-1.5 sm:gap-2 font-mono text-[11px] sm:text-xs w-full sm:w-auto">
               <button
                 onClick={handleRestartGame}
-                className="px-3 py-1.5 bg-white border-2 border-black hover:bg-brand-yellow font-bold flex items-center gap-1.5 shadow-[2px_2px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all cursor-pointer"
+                className="py-2 px-2 sm:px-3 sm:py-1.5 bg-white border-2 border-black hover:bg-brand-yellow font-bold flex items-center justify-center gap-1 shadow-[2px_2px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all cursor-pointer text-center"
                 title="Reiniciar Demo"
               >
-                <RotateCcw size={14} /> REINICIAR
+                <RotateCcw size={13} /> <span className="hidden xs:inline sm:inline">REINICIAR</span><span className="xs:hidden sm:hidden">REINIC.</span>
               </button>
               <button
                 onClick={handleToggleFullscreen}
-                className="px-3 py-1.5 bg-brand-yellow text-black border-2 border-black hover:bg-black hover:text-white font-bold flex items-center gap-1.5 shadow-[2px_2px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all cursor-pointer"
+                className="py-2 px-2 sm:px-3 sm:py-1.5 bg-brand-yellow text-black border-2 border-black hover:bg-black hover:text-white font-bold flex items-center justify-center gap-1 shadow-[2px_2px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all cursor-pointer text-center"
                 title="Pantalla Completa"
               >
-                {isFullscreenMode ? <Minimize2 size={14} /> : <Maximize2 size={14} />} 
-                {isFullscreenMode ? 'SALIR FULLSCREEN' : 'PANTALLA COMPLETA'}
+                {isFullscreenMode ? <Minimize2 size={13} /> : <Maximize2 size={13} />} 
+                <span>{isFullscreenMode ? 'SALIR' : 'FULLSCREEN'}</span>
               </button>
               <a
                 href="/games/el-viaje-de-coquimbo.html"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-3 py-1.5 bg-black text-white border-2 border-black hover:bg-brand-pink font-bold flex items-center gap-1.5 shadow-[2px_2px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all"
+                className="py-2 px-2 sm:px-3 sm:py-1.5 bg-black text-white border-2 border-black hover:bg-brand-pink font-bold flex items-center justify-center gap-1 shadow-[2px_2px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all text-center"
                 title="Abrir en pestaña completa"
               >
-                <ExternalLink size={14} /> ABRIR JUEGO
+                <ExternalLink size={13} /> <span className="hidden xs:inline sm:inline">ABRIR</span> JUEGO
               </a>
             </div>
           </div>
@@ -262,7 +262,7 @@ export default function DeCeroAVideojuegoPage() {
           {/* Arcade Cabinet Frame */}
           <div className="border-4 border-black bg-black p-2 md:p-4 shadow-neo relative">
             {/* Header Marquee */}
-            <div className="bg-zinc-900 border-2 border-zinc-700 px-4 py-2 flex items-center justify-between font-mono text-xs mb-3 text-zinc-300">
+            <div className="bg-zinc-900 border-2 border-zinc-700 px-3 sm:px-4 py-2 flex items-center justify-between font-mono text-[11px] sm:text-xs mb-3 text-zinc-300">
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 bg-red-500 rounded-full animate-ping"></span>
                 <span className="font-bold text-brand-yellow">ARCADE CABIN // LIVE DEMO</span>
@@ -275,18 +275,18 @@ export default function DeCeroAVideojuegoPage() {
             </div>
 
             {/* Iframe Viewport / Start Screen */}
-            <div className="border-2 border-black bg-black overflow-hidden relative aspect-[16/9] w-full">
+            <div className="border-2 border-black bg-black overflow-hidden relative min-h-[280px] sm:min-h-[360px] md:aspect-[16/9] w-full flex items-center justify-center">
               {isGameActive ? (
                 <iframe
                   key={gameKey}
                   ref={iframeRef}
                   src="/games/el-viaje-de-coquimbo.html"
-                  className="w-full h-full border-0 block"
+                  className="w-full h-full border-0 block absolute inset-0"
                   allow="fullscreen; autoplay"
                   title="El Viaje de Coquimbo - Demo de Videojuego"
                 />
               ) : (
-                <div className="w-full h-full relative flex flex-col items-center justify-center p-6 text-center select-none bg-zinc-950">
+                <div className="w-full h-full relative flex flex-col items-center justify-center p-4 sm:p-6 text-center select-none bg-zinc-950 py-8">
                   {/* Background game preview image dimmed */}
                   <img
                     src="/images/de_cero_a_videojuego.png"
@@ -295,34 +295,36 @@ export default function DeCeroAVideojuegoPage() {
                   />
                   
                   {/* CRT Scanline overlay effect */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/60 pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/80 pointer-events-none" />
 
                   {/* Centered start content */}
-                  <div className="relative z-10 space-y-4 max-w-md">
-                    <span className="font-mono text-[11px] uppercase font-bold text-black bg-brand-yellow border-2 border-black px-3 py-1 shadow-[2px_2px_0px_#000] inline-flex items-center gap-1.5 animate-pulse">
-                      <Gamepad2 size={14} /> DEMO INTERACTIVA
-                    </span>
+                  <div className="relative z-10 space-y-3 sm:space-y-4 max-w-md my-auto">
+                    <div>
+                      <span className="font-mono text-[10px] sm:text-[11px] uppercase font-bold text-black bg-brand-yellow border border-black px-2.5 py-0.5 sm:px-3 sm:py-1 shadow-[2px_2px_0px_#000] inline-flex items-center gap-1.5 animate-pulse">
+                        <Gamepad2 size={13} /> DEMO INTERACTIVA
+                      </span>
+                    </div>
                     
-                    <h3 className="font-mono text-2xl sm:text-3xl font-extrabold text-white uppercase tracking-tight drop-shadow-md">
+                    <h3 className="font-mono text-xl sm:text-3xl font-extrabold text-white uppercase tracking-tight drop-shadow-md">
                       El Viaje de Coquimbo
                     </h3>
                     
-                    <p className="text-zinc-300 font-mono text-xs max-w-sm mx-auto">
-                      Presiona el botón para cargar el arcade y activar el audio retro. En dispositivos móviles se abrirá en pantalla completa para jugar cómodamente.
+                    <p className="text-zinc-300 font-mono text-[11px] sm:text-xs max-w-sm mx-auto leading-relaxed px-2">
+                      Presiona para cargar el juego y activar el audio retro. En móviles se abre en pantalla completa.
                     </p>
 
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+                    <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-2.5">
                       <button
                         onClick={() => handleStartGame(true)}
-                        className="w-full sm:w-auto px-6 py-3.5 bg-brand-yellow text-black font-mono font-bold text-sm sm:text-base border-2 border-white hover:bg-[#25d366] hover:text-black transition-all flex items-center justify-center gap-2 shadow-[4px_4px_0px_#fff] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none cursor-pointer"
+                        className="w-full sm:w-auto px-6 py-3.5 bg-brand-yellow text-black font-mono font-bold text-xs sm:text-sm border-2 border-white hover:bg-[#25d366] hover:text-black transition-all flex items-center justify-center gap-2 shadow-[3px_3px_0px_#fff] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none cursor-pointer"
                       >
-                        <Maximize2 size={18} /> ▶ JUGAR EN FULLSCREEN
+                        <Maximize2 size={16} /> ▶ JUGAR EN FULLSCREEN
                       </button>
                       <button
                         onClick={() => handleStartGame(false)}
-                        className="hidden sm:inline-flex w-full sm:w-auto px-5 py-3.5 bg-zinc-900 text-white font-mono font-bold text-sm border-2 border-zinc-500 hover:bg-white hover:text-black transition-all items-center justify-center gap-2 cursor-pointer"
+                        className="hidden sm:inline-flex w-full sm:w-auto px-4 py-3 bg-zinc-900 text-white font-mono font-bold text-xs border border-zinc-500 hover:bg-white hover:text-black transition-all items-center justify-center gap-1.5 cursor-pointer"
                       >
-                        <Volume2 size={16} /> Jugar aquí
+                        <Volume2 size={15} /> Jugar aquí
                       </button>
                     </div>
                   </div>
@@ -334,13 +336,10 @@ export default function DeCeroAVideojuegoPage() {
             {isFullscreenMode && isGameActive && (
               <div className="fixed inset-0 z-[99999] bg-black flex flex-col w-screen h-screen overflow-hidden">
                 {/* Fullscreen Top Control Bar */}
-                <div className="bg-zinc-950 border-b border-zinc-800 px-4 py-2 flex items-center justify-between font-mono text-xs text-white shrink-0">
+                <div className="bg-zinc-950 border-b border-zinc-800 px-3 sm:px-4 py-2 flex items-center justify-between font-mono text-xs text-white shrink-0">
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-brand-yellow flex items-center gap-1.5">
-                      <Gamepad2 size={16} /> EL VIAJE DE COQUIMBO
-                    </span>
-                    <span className="hidden md:inline-block text-[11px] text-zinc-400">
-                      (Modo Pantalla Completa)
+                    <span className="font-bold text-brand-yellow flex items-center gap-1.5 text-[11px] sm:text-xs">
+                      <Gamepad2 size={15} /> EL VIAJE DE COQUIMBO
                     </span>
                   </div>
 
@@ -352,14 +351,14 @@ export default function DeCeroAVideojuegoPage() {
                   <div className="flex items-center gap-2">
                     <button
                       onClick={handleRestartGame}
-                      className="px-2.5 py-1 bg-zinc-800 hover:bg-zinc-700 text-white text-[11px] border border-zinc-600 font-bold flex items-center gap-1 transition-all cursor-pointer"
+                      className="px-2 py-1 bg-zinc-800 hover:bg-zinc-700 text-white text-[10px] sm:text-[11px] border border-zinc-600 font-bold flex items-center gap-1 transition-all cursor-pointer"
                       title="Reiniciar Nivel"
                     >
                       <RotateCcw size={12} /> REINICIAR
                     </button>
                     <button
                       onClick={handleExitFullscreen}
-                      className="px-3 py-1 bg-brand-pink text-white hover:bg-white hover:text-black text-xs font-bold border border-white flex items-center gap-1.5 shadow-[2px_2px_0px_#fff] transition-all cursor-pointer"
+                      className="px-3 py-1 bg-brand-pink text-white hover:bg-white hover:text-black text-[11px] sm:text-xs font-bold border border-white flex items-center gap-1 shadow-[2px_2px_0px_#fff] transition-all cursor-pointer"
                       title="Salir de Pantalla Completa"
                     >
                       <X size={14} /> SALIR
