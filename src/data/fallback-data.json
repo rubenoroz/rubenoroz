@@ -226,6 +226,17 @@
       "duration": "8 a 12 Horas",
       "status": "In-Company & Grupos",
       "sort_order": 7
+    },
+    {
+      "title": "De la Fuente al Corte: IA para Cine Documental",
+      "description": "Programa profesional de 16 horas: integra IA en el flujo documental completo (investigación de fuentes, entrevistas, archivo, montaje y ética) sin sustituir la evidencia ni el criterio editorial.",
+      "image_url": "/images/ia_cine_documental.png",
+      "link_url": "/cursos/ia-para-cine-documental",
+      "category": "Programa Profesional",
+      "modality": "Presencial / Online",
+      "duration": "16 Horas",
+      "status": "Convocatoria & Grupos",
+      "sort_order": 8
     }
   ]
 }
