@@ -6,21 +6,32 @@ import {
   ArrowLeft, CheckCircle2, Clock, Laptop, Calendar, 
   Sparkles, ExternalLink, MessageCircle, ShieldCheck, 
   Layers, Code2, Rocket, ArrowRight, UserCheck, Users,
-  Gamepad2, Volume2, Maximize2, RotateCcw, Monitor,
-  Compass, HelpCircle, Terminal, Flame, Music
+  Gamepad2, Volume2, Maximize2, Minimize2, RotateCcw, Monitor,
+  Compass, HelpCircle, Terminal, Flame, Music, X, Smartphone
 } from 'lucide-react'
 
 export default function DeCeroAVideojuegoPage() {
   const [gameKey, setGameKey] = useState(0)
   const [isGameActive, setIsGameActive] = useState(false)
+  const [isFullscreenMode, setIsFullscreenMode] = useState(false)
   const iframeRef = useRef<HTMLIFrameElement>(null)
+  const fullscreenIframeRef = useRef<HTMLIFrameElement>(null)
 
   const waUrlGroup = 'https://wa.me/523335769348?text=Hola%2C%20me%20interesa%20el%20taller%20%22De%20Cero%20a%20Videojuego%22.%20%C2%BFMe%20pueden%20dar%20informaci%C3%B3n%3F'
   const waUrlPersonal = 'https://wa.me/523335769348?text=Hola%2C%20quiero%20m%C3%A1s%20informaci%C3%B3n%20sobre%20el%20curso%20personal%20o%20asesor%C3%ADa%201%20a%201%20de%20%22De%20Cero%20a%20Videojuego%22.'
   const waUrlBook = 'https://wa.me/523335769348?text=Hola%2C%20quiero%20apartar%20mi%20lugar%20en%20el%20taller%20%22De%20Cero%20a%20Videojuego%22.'
 
-  const handleStartGame = () => {
+  const handleStartGame = (openFullscreen = false) => {
     setIsGameActive(true)
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+    if (openFullscreen || isMobile) {
+      setIsFullscreenMode(true)
+      try {
+        if (document.documentElement.requestFullscreen) {
+          document.documentElement.requestFullscreen().catch(() => {})
+        }
+      } catch (err) {}
+    }
   }
 
   const handleRestartGame = () => {
@@ -28,15 +39,34 @@ export default function DeCeroAVideojuegoPage() {
     setGameKey(prev => prev + 1)
   }
 
-  const handleFullscreen = () => {
+  const handleToggleFullscreen = () => {
     setIsGameActive(true)
-    setTimeout(() => {
-      if (iframeRef.current) {
-        if (iframeRef.current.requestFullscreen) {
-          iframeRef.current.requestFullscreen()
-        }
+    setIsFullscreenMode(prev => {
+      const nextState = !prev
+      if (nextState) {
+        try {
+          if (document.documentElement.requestFullscreen) {
+            document.documentElement.requestFullscreen().catch(() => {})
+          }
+        } catch (err) {}
+      } else {
+        try {
+          if (document.fullscreenElement && document.exitFullscreen) {
+            document.exitFullscreen().catch(() => {})
+          }
+        } catch (err) {}
       }
-    }, 100)
+      return nextState
+    })
+  }
+
+  const handleExitFullscreen = () => {
+    setIsFullscreenMode(false)
+    try {
+      if (document.fullscreenElement && document.exitFullscreen) {
+        document.exitFullscreen().catch(() => {})
+      }
+    } catch (err) {}
   }
 
   return (
@@ -204,17 +234,18 @@ export default function DeCeroAVideojuegoPage() {
             <div className="flex items-center gap-2 font-mono text-xs">
               <button
                 onClick={handleRestartGame}
-                className="px-3 py-1.5 bg-white border-2 border-black hover:bg-brand-yellow font-bold flex items-center gap-1.5 shadow-[2px_2px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all"
+                className="px-3 py-1.5 bg-white border-2 border-black hover:bg-brand-yellow font-bold flex items-center gap-1.5 shadow-[2px_2px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all cursor-pointer"
                 title="Reiniciar Demo"
               >
                 <RotateCcw size={14} /> REINICIAR
               </button>
               <button
-                onClick={handleFullscreen}
-                className="px-3 py-1.5 bg-brand-yellow text-black border-2 border-black hover:bg-black hover:text-white font-bold flex items-center gap-1.5 shadow-[2px_2px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all"
+                onClick={handleToggleFullscreen}
+                className="px-3 py-1.5 bg-brand-yellow text-black border-2 border-black hover:bg-black hover:text-white font-bold flex items-center gap-1.5 shadow-[2px_2px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all cursor-pointer"
                 title="Pantalla Completa"
               >
-                <Maximize2 size={14} /> PANTALLA COMPLETA
+                {isFullscreenMode ? <Minimize2 size={14} /> : <Maximize2 size={14} />} 
+                {isFullscreenMode ? 'SALIR FULLSCREEN' : 'PANTALLA COMPLETA'}
               </button>
               <a
                 href="/games/el-viaje-de-coquimbo.html"
@@ -277,21 +308,78 @@ export default function DeCeroAVideojuegoPage() {
                     </h3>
                     
                     <p className="text-zinc-300 font-mono text-xs max-w-sm mx-auto">
-                      Presiona el botón para cargar el arcade y activar el audio retro.
+                      Presiona el botón para cargar el arcade y activar el audio retro. En dispositivos móviles se abrirá en pantalla completa para jugar cómodamente.
                     </p>
 
-                    <div className="pt-2">
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
                       <button
-                        onClick={handleStartGame}
-                        className="w-full sm:w-auto px-8 py-4 bg-brand-yellow text-black font-mono font-bold text-sm sm:text-base border-2 border-white hover:bg-[#25d366] hover:text-black transition-all flex items-center justify-center gap-2 shadow-[4px_4px_0px_#fff] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none cursor-pointer"
+                        onClick={() => handleStartGame(true)}
+                        className="w-full sm:w-auto px-6 py-3.5 bg-brand-yellow text-black font-mono font-bold text-sm sm:text-base border-2 border-white hover:bg-[#25d366] hover:text-black transition-all flex items-center justify-center gap-2 shadow-[4px_4px_0px_#fff] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none cursor-pointer"
                       >
-                        <Volume2 size={20} /> ▶ CLIC PARA JUGAR CON AUDIO
+                        <Maximize2 size={18} /> ▶ JUGAR EN FULLSCREEN
+                      </button>
+                      <button
+                        onClick={() => handleStartGame(false)}
+                        className="hidden sm:inline-flex w-full sm:w-auto px-5 py-3.5 bg-zinc-900 text-white font-mono font-bold text-sm border-2 border-zinc-500 hover:bg-white hover:text-black transition-all items-center justify-center gap-2 cursor-pointer"
+                      >
+                        <Volume2 size={16} /> Jugar aquí
                       </button>
                     </div>
                   </div>
                 </div>
               )}
             </div>
+
+            {/* FULLSCREEN OVERLAY MODAL FOR MOBILES & DESKTOPS */}
+            {isFullscreenMode && isGameActive && (
+              <div className="fixed inset-0 z-[99999] bg-black flex flex-col w-screen h-screen overflow-hidden">
+                {/* Fullscreen Top Control Bar */}
+                <div className="bg-zinc-950 border-b border-zinc-800 px-4 py-2 flex items-center justify-between font-mono text-xs text-white shrink-0">
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-brand-yellow flex items-center gap-1.5">
+                      <Gamepad2 size={16} /> EL VIAJE DE COQUIMBO
+                    </span>
+                    <span className="hidden md:inline-block text-[11px] text-zinc-400">
+                      (Modo Pantalla Completa)
+                    </span>
+                  </div>
+
+                  <div className="hidden sm:flex items-center gap-1.5 text-zinc-400 text-[11px]">
+                    <Smartphone size={14} className="text-brand-yellow" />
+                    <span>Gira tu teléfono en horizontal para mayor comodidad</span>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={handleRestartGame}
+                      className="px-2.5 py-1 bg-zinc-800 hover:bg-zinc-700 text-white text-[11px] border border-zinc-600 font-bold flex items-center gap-1 transition-all cursor-pointer"
+                      title="Reiniciar Nivel"
+                    >
+                      <RotateCcw size={12} /> REINICIAR
+                    </button>
+                    <button
+                      onClick={handleExitFullscreen}
+                      className="px-3 py-1 bg-brand-pink text-white hover:bg-white hover:text-black text-xs font-bold border border-white flex items-center gap-1.5 shadow-[2px_2px_0px_#fff] transition-all cursor-pointer"
+                      title="Salir de Pantalla Completa"
+                    >
+                      <X size={14} /> SALIR
+                    </button>
+                  </div>
+                </div>
+
+                {/* Fullscreen Iframe Viewport */}
+                <div className="flex-1 w-full h-full bg-black relative overflow-hidden">
+                  <iframe
+                    key={`fullscreen-${gameKey}`}
+                    ref={fullscreenIframeRef}
+                    src="/games/el-viaje-de-coquimbo.html"
+                    className="w-full h-full border-0 block"
+                    allow="fullscreen; autoplay"
+                    title="El Viaje de Coquimbo - Pantalla Completa"
+                  />
+                </div>
+              </div>
+            )}
 
             {/* Instructions / Controls Panel */}
             <div className="mt-3 bg-zinc-900 border-2 border-zinc-700 p-3 sm:p-4 font-mono text-xs text-zinc-300">
