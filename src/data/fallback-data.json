@@ -204,6 +204,17 @@
       "duration": "4 Horas",
       "status": "Cupos Limitados",
       "sort_order": 5
+    },
+    {
+      "title": "De Cero a Video con IA",
+      "description": "Produce un video completo de 20 a 45 segundos con Inteligencia Artificial en 4 horas: guion por planos, keyframes consistentes, animación de video, voz, música y montaje final en MP4.",
+      "image_url": "/images/de_cero_a_video.png",
+      "link_url": "/cursos/de-cero-a-video",
+      "category": "Taller Audiovisual",
+      "modality": "Presencial / Online",
+      "duration": "4 Horas",
+      "status": "Cupos Limitados",
+      "sort_order": 6
     }
   ]
 }
