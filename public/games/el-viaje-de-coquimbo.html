@@ -1320,7 +1320,7 @@ buildLevel();spawnEntities();resetPlayerPos();
 if(pw>0){player.power=pw;resizePower()}
 camX=Math.max(0,Math.min(player.x-VW*0.42,COLS*TILE-VW));
 timeLeft=300;winInit=false;
-startMusic(levelSong());
+if(state==='playing') startMusic(levelSong());
 }
 function initGame(){
 score=0;coins=0;lives=3;paused=false;
@@ -2967,9 +2967,11 @@ if(e.code==='KeyF')
 toggleFullscreen();
 });
 window.addEventListener('keyup',e=>{keys[e.code]=false});
-window.addEventListener('pointerdown',()=>requestFs());
-window.addEventListener('touchstart',()=>requestFs(),{passive:true});
 window.addEventListener('blur',()=>{for(const k in keys)keys[k]=false});
+canvas.addEventListener('click',()=>{
+  ac();
+  if(state==='title') pressEnter();
+});
 
 const touchUI=('ontouchstart' in window)||(typeof navigator!=='undefined'&&navigator.maxTouchPoints>0);
 let joyId=null,joyX0=0,joyDX=0,jumpId=null,fireId=null,crouchId=null;

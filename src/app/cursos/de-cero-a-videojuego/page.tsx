@@ -12,22 +12,31 @@ import {
 
 export default function DeCeroAVideojuegoPage() {
   const [gameKey, setGameKey] = useState(0)
+  const [isGameActive, setIsGameActive] = useState(false)
   const iframeRef = useRef<HTMLIFrameElement>(null)
 
   const waUrlGroup = 'https://wa.me/523335769348?text=Hola%2C%20me%20interesa%20el%20taller%20%22De%20Cero%20a%20Videojuego%22.%20%C2%BFMe%20pueden%20dar%20informaci%C3%B3n%3F'
   const waUrlPersonal = 'https://wa.me/523335769348?text=Hola%2C%20quiero%20m%C3%A1s%20informaci%C3%B3n%20sobre%20el%20curso%20personal%20o%20asesor%C3%ADa%201%20a%201%20de%20%22De%20Cero%20a%20Videojuego%22.'
   const waUrlBook = 'https://wa.me/523335769348?text=Hola%2C%20quiero%20apartar%20mi%20lugar%20en%20el%20taller%20%22De%20Cero%20a%20Videojuego%22.'
 
+  const handleStartGame = () => {
+    setIsGameActive(true)
+  }
+
   const handleRestartGame = () => {
+    setIsGameActive(true)
     setGameKey(prev => prev + 1)
   }
 
   const handleFullscreen = () => {
-    if (iframeRef.current) {
-      if (iframeRef.current.requestFullscreen) {
-        iframeRef.current.requestFullscreen()
+    setIsGameActive(true)
+    setTimeout(() => {
+      if (iframeRef.current) {
+        if (iframeRef.current.requestFullscreen) {
+          iframeRef.current.requestFullscreen()
+        }
       }
-    }
+    }, 100)
   }
 
   return (
@@ -234,16 +243,54 @@ export default function DeCeroAVideojuegoPage() {
               </div>
             </div>
 
-            {/* Iframe Viewport */}
+            {/* Iframe Viewport / Start Screen */}
             <div className="border-2 border-black bg-black overflow-hidden relative aspect-[16/9] w-full">
-              <iframe
-                key={gameKey}
-                ref={iframeRef}
-                src="/games/el-viaje-de-coquimbo.html"
-                className="w-full h-full border-0 block"
-                allow="fullscreen; autoplay"
-                title="El Viaje de Coquimbo - Demo de Videojuego"
-              />
+              {isGameActive ? (
+                <iframe
+                  key={gameKey}
+                  ref={iframeRef}
+                  src="/games/el-viaje-de-coquimbo.html"
+                  className="w-full h-full border-0 block"
+                  allow="fullscreen; autoplay"
+                  title="El Viaje de Coquimbo - Demo de Videojuego"
+                />
+              ) : (
+                <div className="w-full h-full relative flex flex-col items-center justify-center p-6 text-center select-none bg-zinc-950">
+                  {/* Background game preview image dimmed */}
+                  <img
+                    src="/images/de_cero_a_videojuego.png"
+                    alt="Arcade Preview"
+                    className="absolute inset-0 w-full h-full object-cover opacity-25 filter blur-[1px]"
+                  />
+                  
+                  {/* CRT Scanline overlay effect */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/60 pointer-events-none" />
+
+                  {/* Centered start content */}
+                  <div className="relative z-10 space-y-4 max-w-md">
+                    <span className="font-mono text-[11px] uppercase font-bold text-black bg-brand-yellow border-2 border-black px-3 py-1 shadow-[2px_2px_0px_#000] inline-flex items-center gap-1.5 animate-pulse">
+                      <Gamepad2 size={14} /> DEMO INTERACTIVA
+                    </span>
+                    
+                    <h3 className="font-mono text-2xl sm:text-3xl font-extrabold text-white uppercase tracking-tight drop-shadow-md">
+                      El Viaje de Coquimbo
+                    </h3>
+                    
+                    <p className="text-zinc-300 font-mono text-xs max-w-sm mx-auto">
+                      Presiona el botón para cargar el arcade y activar el audio retro.
+                    </p>
+
+                    <div className="pt-2">
+                      <button
+                        onClick={handleStartGame}
+                        className="w-full sm:w-auto px-8 py-4 bg-brand-yellow text-black font-mono font-bold text-sm sm:text-base border-2 border-white hover:bg-[#25d366] hover:text-black transition-all flex items-center justify-center gap-2 shadow-[4px_4px_0px_#fff] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none cursor-pointer"
+                      >
+                        <Volume2 size={20} /> ▶ CLIC PARA JUGAR CON AUDIO
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Instructions / Controls Panel */}
