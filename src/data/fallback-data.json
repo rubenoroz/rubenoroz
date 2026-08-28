@@ -182,6 +182,17 @@
       "duration": "4 Horas",
       "status": "Cupos Limitados",
       "sort_order": 3
+    },
+    {
+      "title": "De Internet a Aplicación",
+      "description": "Convierte tu página web estática en una aplicación real con base de datos en la nube (Supabase), CRUD completo, notificaciones por correo (Resend) y despliegue en Vercel en 4 horas.",
+      "image_url": "/images/de_internet_a_aplicacion.png",
+      "link_url": "/cursos/de-internet-a-aplicacion",
+      "category": "Taller Intensivo",
+      "modality": "Presencial / Online",
+      "duration": "4 Horas",
+      "status": "Cupos Limitados",
+      "sort_order": 4
     }
   ]
 }
