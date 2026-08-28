@@ -215,6 +215,17 @@
       "duration": "4 Horas",
       "status": "Cupos Limitados",
       "sort_order": 6
+    },
+    {
+      "title": "IA para Equipos Creativos",
+      "description": "De la Idea al Sistema Multimedia: Pasa del uso aislado de chatbots a un flujo creativo estructurado para agencias y estudios. Dirección de arte, consistencia de marca, motion, video y asistentes especializados.",
+      "image_url": "/images/ia_para_equipos_creativos.png",
+      "link_url": "/cursos/ia-para-equipos-creativos",
+      "category": "Programa Ejecutivo",
+      "modality": "In-Company / Online",
+      "duration": "8 a 12 Horas",
+      "status": "In-Company & Grupos",
+      "sort_order": 7
     }
   ]
 }
