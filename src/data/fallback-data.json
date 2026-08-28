@@ -193,6 +193,17 @@
       "duration": "4 Horas",
       "status": "Cupos Limitados",
       "sort_order": 4
+    },
+    {
+      "title": "Desarrollo de Apps Web para Docentes",
+      "description": "Diseña y genera aplicaciones web educativas a la medida con IA y No-Code sin saber programar. Resuelve problemas del aula (rúbricas, asistencias, entregas) con la metodología del Prompt Maestro.",
+      "image_url": "/images/ia_para_docentes.png",
+      "link_url": "/cursos/ia-para-docentes",
+      "category": "Taller Docente",
+      "modality": "Presencial / Online",
+      "duration": "4 Horas",
+      "status": "Cupos Limitados",
+      "sort_order": 5
     }
   ]
 }
