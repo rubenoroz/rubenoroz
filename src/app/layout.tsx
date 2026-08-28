@@ -15,10 +15,33 @@ const spaceMono = Space_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://rubenoroz.com"),
   title: "Rubén Oroz | Tecnología Aplicada, IA y Producción Audiovisual",
   description: "Sitio web personal y portafolio de Rubén Oroz, experto en tecnología aplicada, integración de IA, profesor universitario de producción audiovisual, productor de televisión y música.",
   keywords: ["Rubén Oroz", "Tecnología Aplicada", "Inteligencia Artificial", "Producción Audiovisual", "ABP", "Jalisco Rockea", "ANGULAR", "UNIVA", "VFX Project Manager", "closerlens.com", "fluxiorsv.com"],
   authors: [{ name: "Rubén Oroz" }],
+  openGraph: {
+    title: "Rubén Oroz | Tecnología Aplicada, IA y Producción Audiovisual",
+    description: "Sitio web personal y portafolio de Rubén Oroz. Académico, productor audiovisual e integrador de Inteligencia Artificial.",
+    url: "https://rubenoroz.com",
+    siteName: "Rubén Oroz",
+    images: [
+      {
+        url: "/images/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Rubén Oroz | Portafolio",
+      },
+    ],
+    locale: "es_MX",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Rubén Oroz | Tecnología Aplicada, IA y Producción Audiovisual",
+    description: "Sitio web personal y portafolio de Rubén Oroz.",
+    images: ["/images/og-image.png"],
+  },
   icons: {
     icon: [
       {
@@ -33,6 +56,7 @@ export const metadata: Metadata = {
         media: "(prefers-color-scheme: dark)",
       },
     ],
+    apple: "/favicon-blk.png",
   },
 };
 

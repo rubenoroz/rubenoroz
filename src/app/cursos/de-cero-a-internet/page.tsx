@@ -9,6 +9,28 @@ import {
 export const metadata = {
   title: 'Taller: De Cero a Internet | Rubén Oroz',
   description: 'Crea y publica tu sitio web con Inteligencia Artificial en 4 horas. Sin saber programar, sin complicaciones.',
+  openGraph: {
+    title: 'Taller: De Cero a Internet | Rubén Oroz',
+    description: 'Crea y publica tu sitio web con Inteligencia Artificial en 4 horas. Sin saber programar, sales con tu página web publicada.',
+    url: 'https://rubenoroz.com/cursos/de-cero-a-internet',
+    siteName: 'Rubén Oroz',
+    images: [
+      {
+        url: '/images/de_cero_a_internet.png',
+        width: 1200,
+        height: 630,
+        alt: 'Taller De Cero a Internet',
+      },
+    ],
+    locale: 'es_MX',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Taller: De Cero a Internet | Rubén Oroz',
+    description: 'Crea y publica tu sitio web con Inteligencia Artificial en 4 horas.',
+    images: ['/images/de_cero_a_internet.png'],
+  },
 }
 
 export default function DeCeroAInternetPage() {
