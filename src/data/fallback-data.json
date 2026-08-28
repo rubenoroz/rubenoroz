@@ -171,6 +171,17 @@
       "duration": "4 Horas",
       "status": "Cupos Limitados",
       "sort_order": 2
+    },
+    {
+      "title": "De Cero a IA",
+      "description": "Usa la inteligencia artificial generativa de forma práctica para resolver tareas reales de trabajo y de negocio en 4 horas. Sin conocimientos técnicos previos. Sales con entregables listos y tus propios prompts.",
+      "image_url": "/images/de_cero_a_ia.png",
+      "link_url": "/cursos/de-cero-a-ia",
+      "category": "Taller Intensivo",
+      "modality": "Presencial / Online",
+      "duration": "4 Horas",
+      "status": "Cupos Limitados",
+      "sort_order": 3
     }
   ]
 }
