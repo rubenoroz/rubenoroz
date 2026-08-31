@@ -1320,7 +1320,7 @@ buildLevel();spawnEntities();resetPlayerPos();
 if(pw>0){player.power=pw;resizePower()}
 camX=Math.max(0,Math.min(player.x-VW*0.42,COLS*TILE-VW));
 timeLeft=300;winInit=false;
-if(state==='playing') startMusic(levelSong());
+if(state!=='title'&&state!=='select'&&state!=='gameover'&&state!=='lvlsel') startMusic(levelSong());
 }
 function initGame(){
 score=0;coins=0;lives=3;paused=false;
@@ -1584,7 +1584,7 @@ player.facing=pcx>player.x+player.w/2?1:-1;
 player.vy+=GRAV;player.y+=player.vy;collideV(player,false);
 }else{winFade=Math.max(0,winFade-0.025)}
 if(--winT>0){updateFx();return}
-if(levelNum<16){gotoLevel(levelNum+1,true);state='playing'}
+if(levelNum<16){state='playing';gotoLevel(levelNum+1,true);startMusic(levelSong())}
 return;
 }
 updatePlayer();
@@ -2927,7 +2927,7 @@ else if(state==='lvlsel'){startLevel(lvSel)}
 else if(state==='select'){charColor=selColor;startMusic(levelSong());state='playing'}
 else if(state==='gameover'){initGame();state='title';startMusic('title')}
 else if(state==='win'&&winT<80){
-if(levelNum<16){gotoLevel(levelNum+1,true);state='playing'}
+if(levelNum<16){state='playing';gotoLevel(levelNum+1,true);startMusic(levelSong())}
 else{initGame();state='title';startMusic('title')}
 }
 }
@@ -2976,74 +2976,273 @@ if(e.code==='KeyF')toggleFullscreen();
 window.addEventListener('keyup',e=>{keys[e.code]=false});
 window.addEventListener('blur',()=>{for(const k in keys)keys[k]=false});
 
-function mPos(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)/r.width*VW,y:(e.clientY-r.top)/r.height*VH}}
+function screenToCanvas(clientX, clientY){
+const r = canvas.getBoundingClientRect();
+const canvasAspect = VW / VH;
+const rectAspect = r.width / r.height;
+let renderW, renderH, offsetX, offsetY;
+if(rectAspect > canvasAspect){
+renderH = r.height;
+renderW = r.height * canvasAspect;
+offsetX = (r.width - renderW) / 2;
+offsetY = 0;
+} else {
+renderW = r.width;
+renderH = r.width / canvasAspect;
+offsetX = 0;
+offsetY = (r.height - renderH) / 2;
+}
+const cx = ((clientX - r.left - offsetX) / renderW) * VW;
+const cy = ((clientY - r.top - offsetY) / renderH) * VH;
+return {
+x: Math.max(-50, Math.min(VW + 50, cx)),
+y: Math.max(-50, Math.min(VH + 50, cy))
+};
+}
 
-canvas.addEventListener('click',e=>{
+function mPos(e){ return screenToCanvas(e.clientX, e.clientY); }
+function tPos(t){ return screenToCanvas(t.clientX, t.clientY); }
+
+canvas.addEventListener('click', e => {
 window.focus();
 ac();
-const p=mPos(e);
-if(state==='title'){
+const p = mPos(e);
+if(state === 'title'){
 pressEnter();
-}else if(state==='select'){
-selColor=p.x<VW/2?'green':'blue';
+} else if(state === 'select'){
+selColor = p.x < VW / 2 ? 'green' : 'blue';
 confirmSelect();
-}else if(state==='lvlsel'){
-const bx=lvBoxes();
-for(let i=0;i<16;i++){
-const r=bx.rect(i);
-if(p.x>=r.x&&p.x<=r.x+r.w&&p.y>=r.y&&p.y<=r.y+r.h){startLevel(i+1);break}
+} else if(state === 'lvlsel'){
+const bx = lvBoxes();
+for(let i = 0; i < 16; i++){
+const r = bx.rect(i);
+if(p.x >= r.x && p.x <= r.x + r.w && p.y >= r.y && p.y <= r.y + r.h){
+startLevel(i + 1);
+break;
 }
-}else if(state==='gameover'||state==='win'){
+}
+} else if(state === 'gameover' || state === 'win'){
 pressEnter();
+} else if(state === 'playing'){
+if(Math.hypot(p.x - PAUSE_BTN.x, p.y - PAUSE_BTN.y) < PAUSE_BTN.r + 8){
+paused = !paused;
+} else if(Math.hypot(p.x - MUTE_BTN.x, p.y - MUTE_BTN.y) < MUTE_BTN.r + 8){
+toggleMusic();
+if(musicOn && !songName) startMusic(levelSong());
+}
 }
 });
 canvas.addEventListener('mouseenter',()=>{window.focus()});
 window.addEventListener('load',()=>{window.focus()});
 
-const touchUI=('ontouchstart' in window)||(typeof navigator!=='undefined'&&navigator.maxTouchPoints>0);
-let joyId=null,joyX0=0,joyDX=0,jumpId=null,fireId=null,crouchId=null;
-const JUMP_BTN={x:VW-95,y:VH-95,r:56},FIRE_BTN={x:VW-210,y:VH-70,r:42},JOY_BTN={x:150,y:VH-95,r:62},CROUCH_BTN={x:52,y:VH-30,r:22};
-function tPos(t){const r=canvas.getBoundingClientRect();return{x:(t.clientX-r.left)/r.width*VW,y:(t.clientY-r.top)/r.height*VH}}
-canvas.addEventListener('touchstart',e=>{e.preventDefault();
-if(state==='title'&&!songName)startMusic('title');
-for(const t of e.changedTouches){const p=tPos(t);
-if(state==='select'){selColor=p.x<VW/2?'green':'blue';confirmSelect();continue}
-if(state==='lvlsel'){const bx=lvBoxes();for(let i=0;i<16;i++){const r=bx.rect(i);if(p.x>=r.x&&p.x<=r.x+r.w&&p.y>=r.y&&p.y<=r.y+r.h){startLevel(i+1);break}}continue}
-if(state!=='playing'){pressEnter();continue}
-if(Math.hypot(p.x-CROUCH_BTN.x,p.y-CROUCH_BTN.y)<CROUCH_BTN.r+12){crouchId=t.identifier;keys.ArrowDown=true}
-else if(Math.hypot(p.x-FIRE_BTN.x,p.y-FIRE_BTN.y)<FIRE_BTN.r+14){fireId=t.identifier;keys.KeyX=true}
-else if(p.x>=VW*0.45&&jumpId===null){jumpId=t.identifier;keys.Space=true;jumpBufT=8}
-else if(joyId===null){joyId=t.identifier;joyX0=p.x;joyDX=0;keys.ArrowLeft=false;keys.ArrowRight=false}
-}},{passive:false});
-canvas.addEventListener('touchmove',e=>{e.preventDefault();
+let touchUI = ('ontouchstart' in window) || (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0);
+let joyId = null, joyX0 = 0, joyDX = 0, jumpId = null, fireId = null, crouchId = null;
+const JUMP_BTN = { x: VW - 90, y: VH - 90, r: 56 };
+const FIRE_BTN = { x: VW - 200, y: VH - 75, r: 42 };
+const JOY_BTN = { x: 135, y: VH - 95, r: 64 };
+const CROUCH_BTN = { x: 50, y: VH - 34, r: 24 };
+const PAUSE_BTN = { x: VW - 40, y: 32, r: 20 };
+const MUTE_BTN = { x: VW - 86, y: 32, r: 20 };
+
+function updateJoyFromPos(p){
+let dx = p.x - JOY_BTN.x;
+if(Math.hypot(joyX0 - JOY_BTN.x, p.y - JOY_BTN.y) > JOY_BTN.r * 1.6){
+dx = p.x - joyX0;
+}
+joyDX = Math.max(-60, Math.min(60, dx));
+keys.ArrowLeft = joyDX < -12;
+keys.ArrowRight = joyDX > 12;
+keys.ShiftLeft = Math.abs(joyDX) > 38 || (fireId !== null);
+}
+
+canvas.addEventListener('touchstart', e => {
+e.preventDefault();
+touchUI = true;
+ac();
+if(state === 'title' && !songName) startMusic('title');
 for(const t of e.changedTouches){
-if(t.identifier===joyId){const p=tPos(t);joyDX=Math.max(-60,Math.min(60,p.x-joyX0));keys.ArrowLeft=joyDX<-10;keys.ArrowRight=joyDX>10;keys.ShiftLeft=Math.abs(joyDX)>45}
-}},{passive:false});
-function onTouchEnd(e){e.preventDefault();
+const p = tPos(t);
+if(state === 'title'){
+pressEnter();
+continue;
+}
+if(state === 'select'){
+selColor = p.x < VW / 2 ? 'green' : 'blue';
+confirmSelect();
+continue;
+}
+if(state === 'lvlsel'){
+const bx = lvBoxes();
+for(let i = 0; i < 16; i++){
+const r = bx.rect(i);
+if(p.x >= r.x && p.x <= r.x + r.w && p.y >= r.y && p.y <= r.y + r.h){
+startLevel(i + 1);
+break;
+}
+}
+continue;
+}
+if(state === 'gameover' || state === 'win'){
+pressEnter();
+continue;
+}
+if(Math.hypot(p.x - PAUSE_BTN.x, p.y - PAUSE_BTN.y) < PAUSE_BTN.r + 10){
+paused = !paused;
+continue;
+}
+if(Math.hypot(p.x - MUTE_BTN.x, p.y - MUTE_BTN.y) < MUTE_BTN.r + 10){
+toggleMusic();
+if(musicOn && !songName) startMusic(levelSong());
+continue;
+}
+if(paused){
+paused = false;
+continue;
+}
+if(p.x < VW * 0.44){
+if(Math.hypot(p.x - CROUCH_BTN.x, p.y - CROUCH_BTN.y) < CROUCH_BTN.r + 14 || (p.y > VH - 58 && p.x < 72)){
+crouchId = t.identifier;
+keys.ArrowDown = true;
+} else {
+joyId = t.identifier;
+joyX0 = p.x;
+updateJoyFromPos(p);
+}
+} else {
+if(Math.hypot(p.x - FIRE_BTN.x, p.y - FIRE_BTN.y) < FIRE_BTN.r + 18){
+fireId = t.identifier;
+keys.KeyX = true;
+keys.ShiftLeft = true;
+} else {
+jumpId = t.identifier;
+keys.Space = true;
+jumpBufT = 8;
+}
+}
+}
+}, { passive: false });
+
+canvas.addEventListener('touchmove', e => {
+e.preventDefault();
 for(const t of e.changedTouches){
-if(t.identifier===joyId){joyId=null;joyDX=0;keys.ArrowLeft=false;keys.ArrowRight=false;keys.ShiftLeft=false}
-if(t.identifier===jumpId){jumpId=null;keys.Space=false}
-if(t.identifier===fireId){fireId=null;keys.KeyX=false}
-if(t.identifier===crouchId){crouchId=null;keys.ArrowDown=false}}}
-canvas.addEventListener('touchend',onTouchEnd,{passive:false});
-canvas.addEventListener('touchcancel',onTouchEnd,{passive:false});
+if(t.identifier === joyId){
+const p = tPos(t);
+updateJoyFromPos(p);
+}
+}
+}, { passive: false });
+
+function onTouchEnd(e){
+e.preventDefault();
+for(const t of e.changedTouches){
+if(t.identifier === joyId){
+joyId = null;
+joyDX = 0;
+keys.ArrowLeft = false;
+keys.ArrowRight = false;
+keys.ShiftLeft = (fireId !== null);
+}
+if(t.identifier === jumpId){
+jumpId = null;
+keys.Space = false;
+}
+if(t.identifier === fireId){
+fireId = null;
+keys.KeyX = false;
+keys.ShiftLeft = (joyId !== null && Math.abs(joyDX) > 38);
+}
+if(t.identifier === crouchId){
+crouchId = null;
+keys.ArrowDown = false;
+}
+}
+}
+canvas.addEventListener('touchend', onTouchEnd, { passive: false });
+canvas.addEventListener('touchcancel', onTouchEnd, { passive: false });
+
 function drawTouchUI(){
-if(!touchUI||state==='gameover')return;
-ctx.globalAlpha=0.32;
-ctx.strokeStyle='#FFF';ctx.lineWidth=3;
-ctx.beginPath();ctx.arc(JOY_BTN.x,JOY_BTN.y,JOY_BTN.r,0,7);ctx.stroke();
-ctx.fillStyle='rgba(255,255,255,.4)';
-ctx.beginPath();ctx.arc(JOY_BTN.x+joyDX*0.7,JOY_BTN.y,26,0,7);ctx.fill();
-ctx.beginPath();ctx.arc(JUMP_BTN.x,JUMP_BTN.y,JUMP_BTN.r,0,7);ctx.stroke();
-ctx.beginPath();ctx.arc(FIRE_BTN.x,FIRE_BTN.y,FIRE_BTN.r,0,7);ctx.stroke();
-ctx.beginPath();ctx.arc(CROUCH_BTN.x,CROUCH_BTN.y,CROUCH_BTN.r,0,7);ctx.stroke();
-ctx.globalAlpha=1;
-txt('SALTAR',JUMP_BTN.x,JUMP_BTN.y+6,15,'#FFF','center');
-txt('FUEGO',FIRE_BTN.x,FIRE_BTN.y+6,13,keys.KeyX?'#FF9060':'#FFF','center');
-ctx.fillStyle=keys.ArrowDown?'#7FE87F':'#FFF';
-ctx.beginPath();ctx.moveTo(CROUCH_BTN.x-9,CROUCH_BTN.y-5);ctx.lineTo(CROUCH_BTN.x+9,CROUCH_BTN.y-5);ctx.lineTo(CROUCH_BTN.x,CROUCH_BTN.y+8);ctx.closePath();ctx.fill();
-if(joyDX<-10)txt('<<',JOY_BTN.x-30,JOY_BTN.y+5,16,'#FFF','center');
-if(joyDX>10)txt('>>',JOY_BTN.x+30,JOY_BTN.y+5,16,'#FFF','center');
+if(!touchUI || state === 'gameover' || state === 'title' || state === 'select' || state === 'lvlsel') return;
+
+ctx.save();
+
+// Header Pause & Mute buttons
+ctx.globalAlpha = 0.85;
+ctx.fillStyle = musicOn ? 'rgba(20,20,20,0.65)' : 'rgba(180,40,40,0.75)';
+ctx.strokeStyle = musicOn ? 'rgba(255,255,255,0.4)' : '#FF4040';
+ctx.lineWidth = 1.5;
+ctx.beginPath(); ctx.arc(MUTE_BTN.x, MUTE_BTN.y, MUTE_BTN.r, 0, 7); ctx.fill(); ctx.stroke();
+txt(musicOn ? '🎵' : '🔇', MUTE_BTN.x, MUTE_BTN.y + 5, 12, '#FFF', 'center');
+
+ctx.fillStyle = paused ? 'rgba(255,210,0,0.85)' : 'rgba(20,20,20,0.65)';
+ctx.strokeStyle = paused ? '#FFD200' : 'rgba(255,255,255,0.4)';
+ctx.beginPath(); ctx.arc(PAUSE_BTN.x, PAUSE_BTN.y, PAUSE_BTN.r, 0, 7); ctx.fill(); ctx.stroke();
+txt(paused ? '▶' : '⏸', PAUSE_BTN.x, PAUSE_BTN.y + 5, 12, paused ? '#000' : '#FFF', 'center');
+
+// JOYSTICK / D-PAD BASE
+ctx.globalAlpha = 0.45;
+ctx.fillStyle = 'rgba(10,15,25,0.75)';
+ctx.strokeStyle = (keys.ArrowLeft || keys.ArrowRight) ? '#00E5FF' : 'rgba(255,255,255,0.5)';
+ctx.lineWidth = 2.5;
+ctx.beginPath(); ctx.arc(JOY_BTN.x, JOY_BTN.y, JOY_BTN.r, 0, 7); ctx.fill(); ctx.stroke();
+
+// Directional Highlights & Arrows on Base
+ctx.globalAlpha = 0.9;
+ctx.fillStyle = keys.ArrowLeft ? '#00E5FF' : 'rgba(255,255,255,0.5)';
+ctx.beginPath();
+ctx.moveTo(JOY_BTN.x - 48, JOY_BTN.y);
+ctx.lineTo(JOY_BTN.x - 30, JOY_BTN.y - 12);
+ctx.lineTo(JOY_BTN.x - 30, JOY_BTN.y + 12);
+ctx.closePath();
+ctx.fill();
+
+ctx.fillStyle = keys.ArrowRight ? '#00E5FF' : 'rgba(255,255,255,0.5)';
+ctx.beginPath();
+ctx.moveTo(JOY_BTN.x + 48, JOY_BTN.y);
+ctx.lineTo(JOY_BTN.x + 30, JOY_BTN.y - 12);
+ctx.lineTo(JOY_BTN.x + 30, JOY_BTN.y + 12);
+ctx.closePath();
+ctx.fill();
+
+// Joystick Knob
+ctx.fillStyle = (keys.ArrowLeft || keys.ArrowRight) ? '#00E5FF' : 'rgba(255,255,255,0.7)';
+ctx.beginPath();
+ctx.arc(JOY_BTN.x + joyDX * 0.75, JOY_BTN.y, 24, 0, 7);
+ctx.fill();
+ctx.strokeStyle = '#FFF';
+ctx.lineWidth = 2;
+ctx.stroke();
+
+// CROUCH BUTTON
+ctx.globalAlpha = 0.85;
+ctx.fillStyle = keys.ArrowDown ? 'rgba(70,220,70,0.85)' : 'rgba(20,20,20,0.6)';
+ctx.strokeStyle = keys.ArrowDown ? '#46DC46' : 'rgba(255,255,255,0.5)';
+ctx.lineWidth = 2;
+ctx.beginPath(); ctx.arc(CROUCH_BTN.x, CROUCH_BTN.y, CROUCH_BTN.r, 0, 7); ctx.fill(); ctx.stroke();
+ctx.fillStyle = keys.ArrowDown ? '#000' : '#FFF';
+ctx.beginPath();
+ctx.moveTo(CROUCH_BTN.x - 8, CROUCH_BTN.y - 4);
+ctx.lineTo(CROUCH_BTN.x + 8, CROUCH_BTN.y - 4);
+ctx.lineTo(CROUCH_BTN.x, CROUCH_BTN.y + 7);
+ctx.closePath();
+ctx.fill();
+
+// JUMP BUTTON (SALTAR)
+const jPressed = keys.Space;
+ctx.fillStyle = jPressed ? 'rgba(40,220,90,0.9)' : 'rgba(20,20,20,0.65)';
+ctx.strokeStyle = jPressed ? '#50FF70' : 'rgba(255,255,255,0.6)';
+ctx.lineWidth = 3;
+ctx.beginPath(); ctx.arc(JUMP_BTN.x, JUMP_BTN.y, JUMP_BTN.r, 0, 7); ctx.fill(); ctx.stroke();
+txt('SALTAR', JUMP_BTN.x, JUMP_BTN.y + 6, 15, jPressed ? '#000' : '#FFF', 'center');
+
+// FIRE BUTTON (FUEGO)
+const fPressed = keys.KeyX;
+ctx.fillStyle = fPressed ? 'rgba(255,90,30,0.9)' : 'rgba(20,20,20,0.65)';
+ctx.strokeStyle = fPressed ? '#FF8040' : 'rgba(255,255,255,0.5)';
+ctx.lineWidth = 2.5;
+ctx.beginPath(); ctx.arc(FIRE_BTN.x, FIRE_BTN.y, FIRE_BTN.r, 0, 7); ctx.fill(); ctx.stroke();
+txt('FUEGO', FIRE_BTN.x, FIRE_BTN.y + 5, 13, fPressed ? '#000' : '#FFF', 'center');
+
+ctx.restore();
 }
 
 let last=performance.now(),acc=0;
