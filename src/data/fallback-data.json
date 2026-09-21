@@ -228,6 +228,17 @@
       "sort_order": 7
     },
     {
+      "title": "IA Aplicada al Trabajo",
+      "description": "Capacitación práctica in-company para identificar oportunidades reales de mejora con Inteligencia Artificial, diseñar usos responsables y convertir tareas repetitivas en procesos medibles y verificables.",
+      "image_url": "/images/ia_aplicada_al_trabajo.png",
+      "link_url": "/cursos/ia-aplicada-al-trabajo",
+      "category": "Programa Ejecutivo",
+      "modality": "In-Company / Online",
+      "duration": "8 Horas",
+      "status": "In-Company & Empresas",
+      "sort_order": 8
+    },
+    {
       "title": "De la Fuente al Corte: IA para Cine Documental",
       "description": "Programa profesional de 16 horas: integra IA en el flujo documental completo (investigación de fuentes, entrevistas, archivo, montaje y ética) sin sustituir la evidencia ni el criterio editorial.",
       "image_url": "/images/ia_cine_documental.png",
@@ -236,7 +247,7 @@
       "modality": "Presencial / Online",
       "duration": "16 Horas",
       "status": "Convocatoria & Grupos",
-      "sort_order": 8
+      "sort_order": 9
     },
     {
       "title": "Creadores del Futuro (Verano Modular)",
@@ -247,7 +258,7 @@
       "modality": "Presencial / Semanal",
       "duration": "1 a 8 Semanas",
       "status": "Inscripciones Abiertas",
-      "sort_order": 9
+      "sort_order": 10
     }
   ]
 }
