@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Outfit, Space_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -72,6 +73,10 @@ export default function RootLayout({
     >
       <body className="min-h-full bg-background text-foreground font-sans selection:bg-brand-yellow selection:text-black">
         {children}
+        <Script
+          src="https://hub.rubenoroz.com/chat/widget.js"
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   );
