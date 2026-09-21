@@ -1142,18 +1142,18 @@ ${currentArea.promptBlueprint}`
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-2">
               <a
-                href={waUrlMain}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full sm:w-auto px-8 py-4 bg-[#25d366] text-black font-mono font-bold text-base border-2 border-white hover:bg-brand-yellow hover:text-black hover:border-black transition-all flex items-center justify-center gap-2 shadow-[4px_4px_0px_#fff]"
+                href="#chat"
+                data-open-chat="true"
+                data-chat-prompt="Hola Rubén, me interesa solicitar una propuesta del taller in-company 'IA Aplicada al Trabajo' para mi equipo o empresa."
+                className="w-full sm:w-auto px-8 py-4 bg-brand-yellow text-black font-mono font-bold text-base border-2 border-white hover:bg-white hover:text-black transition-all flex items-center justify-center gap-2 shadow-[4px_4px_0px_#fff] cursor-pointer"
               >
-                <MessageCircle size={20} />
-                SOLICITAR INFORMACIÓN POR WHATSAPP
+                <Sparkles size={20} />
+                SOLICITAR PROPUESTA EN EL CHAT ASISTENTE
               </a>
             </div>
 
             <div className="font-mono text-xs text-zinc-400 pt-2">
-              Respuesta directa por Rubén Oroz · Sesiones presenciales in-company o remotas interactivas
+              Atención personalizada por el asistente virtual · Sesiones presenciales in-company o remotas interactivas
             </div>
           </section>
         </main>
@@ -1165,20 +1165,6 @@ ${currentArea.promptBlueprint}`
       <footer className="border-t-2 border-black bg-white py-6 px-6 text-center font-mono text-xs text-zinc-500">
         <div>© 2026 Rubén Oroz · Taller IA Aplicada al Trabajo · Todos los derechos reservados</div>
       </footer>
-
-      {/* ================================================================= */}
-      {/* BOTÓN FLOTANTE DE WHATSAPP                                        */}
-      {/* ================================================================= */}
-      <a
-        href={waUrlMain}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#25d366] border-2 border-black flex items-center justify-center text-black hover:bg-black hover:text-white shadow-neo active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer"
-        title="Solicitar información para mi empresa por WhatsApp"
-        aria-label="Solicitar información para mi empresa por WhatsApp"
-      >
-        <MessageCircle size={28} />
-      </a>
     </div>
   )
 }

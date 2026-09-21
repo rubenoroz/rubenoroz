@@ -605,17 +605,17 @@ export default function CreadoresDelFuturoPage() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a 
-              href={waUrlGroup}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full sm:w-auto px-8 py-4 bg-[#25d366] text-black font-mono font-bold text-base border-2 border-white hover:bg-brand-yellow hover:text-black transition-all flex items-center justify-center gap-2 shadow-[4px_4px_0px_#fff]"
+              href="#chat"
+              data-open-chat="true"
+              data-chat-prompt="Hola Rubén, me interesa consultar información, fechas o apartar lugar para el programa 'Creadores del Futuro'."
+              className="w-full sm:w-auto px-8 py-4 bg-brand-yellow text-black font-mono font-bold text-base border-2 border-white hover:bg-white hover:text-black transition-all flex items-center justify-center gap-2 shadow-[4px_4px_0px_#fff] cursor-pointer"
             >
-              <MessageCircle size={20} /> CONSULTAR FECHAS & SEDES POR WHATSAPP
+              <Sparkles size={20} /> CONSULTAR EN EL CHAT ASISTENTE
             </a>
           </div>
 
           <div className="font-mono text-xs text-zinc-400 pt-4 border-t border-zinc-800">
-            Atención personalizada a familias al WhatsApp: <span className="text-brand-yellow font-bold">333 576 9348</span>
+            Atención e informes directos por nuestro <span className="text-brand-yellow font-bold">Chatbot Asistente</span> (esquina inferior derecha)
           </div>
         </section>
 
@@ -625,18 +625,6 @@ export default function CreadoresDelFuturoPage() {
       <footer className="border-t-2 border-black bg-white py-6 px-6 text-center font-mono text-xs text-zinc-500">
         <div>© {new Date().getFullYear()} Rubén Oroz · Creadores del Futuro · Todos los derechos reservados</div>
       </footer>
-
-      {/* FLOATING WHATSAPP BUTTON */}
-      <a 
-        href={waUrlGroup}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#25d366] border-2 border-black flex items-center justify-center text-black hover:bg-black hover:text-white shadow-neo active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer"
-        title="Contactar por WhatsApp"
-        aria-label="Contactar por WhatsApp"
-      >
-        <MessageCircle size={28} />
-      </a>
 
     </div>
   )

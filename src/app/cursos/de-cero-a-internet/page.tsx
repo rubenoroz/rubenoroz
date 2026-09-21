@@ -34,9 +34,9 @@ export const metadata = {
 }
 
 export default function DeCeroAInternetPage() {
-  const waUrlGroup = 'https://wa.me/523335769348?text=Hola%2C%20me%20interesa%20el%20taller%20%22De%20Cero%20a%20Internet%22.%20%C2%BFMe%20dan%20informaci%C3%B3n%3F'
-  const waUrlPersonal = 'https://wa.me/523335769348?text=Hola%2C%20quiero%20m%C3%A1s%20informaci%C3%B3n%20sobre%20el%20curso%20personal%20o%20la%20asesor%C3%ADa%20de%20%22De%20Cero%20a%20Internet%22.'
-  const waUrlBook = 'https://wa.me/523335769348?text=Hola%2C%20quiero%20apartar%20mi%20lugar%20en%20el%20taller%20%22De%20Cero%20a%20Internet%22.'
+  const promptGroup = 'Hola, quiero apartar mi lugar en el taller De Cero a Internet para las próximas fechas confirmadas (26 Sep, 3 Oct, 10 Oct).'
+  const promptPersonal = 'Hola Rubén, me interesa solicitar información sobre el taller personal o la asesoría personalizada de De Cero a Internet.'
+  const promptBook = 'Hola, quiero apartar mi lugar en el taller De Cero a Internet.'
 
   return (
     <div className="min-h-screen bg-background text-foreground tech-grid flex flex-col">
@@ -55,12 +55,12 @@ export default function DeCeroAInternetPage() {
               4 HORAS · INTENSIVO
             </span>
             <a 
-              href={waUrlBook}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-3 py-1 bg-black text-white hover:bg-brand-pink font-bold border-2 border-black transition-all flex items-center gap-1.5 shadow-[2px_2px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
+              href="#chat"
+              data-open-chat="true"
+              data-chat-prompt={promptBook}
+              className="px-3 py-1 bg-black text-white hover:bg-brand-pink font-bold border-2 border-black transition-all flex items-center gap-1.5 shadow-[2px_2px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none cursor-pointer"
             >
-              <MessageCircle size={14} /> APARTAR LUGAR
+              <Sparkles size={14} /> APARTAR LUGAR
             </a>
           </div>
         </div>
@@ -99,12 +99,12 @@ export default function DeCeroAInternetPage() {
 
               <div className="flex flex-wrap gap-4 pt-4">
                 <a 
-                  href={waUrlGroup}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-6 py-3.5 bg-[#25d366] text-black font-mono font-bold border-2 border-black hover:bg-black hover:text-white hover:shadow-neo active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all flex items-center gap-2 shadow-neo text-sm sm:text-base"
+                  href="#chat"
+                  data-open-chat="true"
+                  data-chat-prompt={promptGroup}
+                  className="px-6 py-3.5 bg-brand-yellow text-black font-mono font-bold border-2 border-black hover:bg-black hover:text-white hover:shadow-neo active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all flex items-center gap-2 shadow-neo text-sm sm:text-base cursor-pointer"
                 >
-                  <MessageCircle size={18} /> QUIERO SABER CUÁNDO ABRE GRUPO
+                  <Sparkles size={18} /> APARTAR LUGAR (26 SEP · 3 OCT · 10 OCT)
                 </a>
                 <a 
                   href="#proceso"
@@ -358,18 +358,18 @@ export default function DeCeroAInternetPage() {
                 </ul>
 
                 <p className="text-zinc-600 font-sans text-sm leading-relaxed">
-                  Déjanos tu mensaje y te avisamos con prioridad en cuanto se abra la próxima fecha de grupo.
+                  Próximas fechas confirmadas: <strong>26 Sep, 3 Oct y 10 Oct</strong>. Aparta tu lugar directamente con nuestro asistente virtual.
                 </p>
               </div>
 
               <div className="pt-6 mt-6 border-t-2 border-black">
                 <a 
-                  href={waUrlGroup}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-3 px-4 bg-[#25d366] text-black font-mono font-bold text-center border-2 border-black hover:bg-black hover:text-white transition-all flex items-center justify-center gap-2 shadow-neo"
+                  href="#chat"
+                  data-open-chat="true"
+                  data-chat-prompt={promptGroup}
+                  className="w-full py-3 px-4 bg-brand-yellow text-black font-mono font-bold text-center border-2 border-black hover:bg-black hover:text-white transition-all flex items-center justify-center gap-2 shadow-neo cursor-pointer"
                 >
-                  <MessageCircle size={16} /> AVÍSENME CUÁNDO ABRE
+                  <Sparkles size={16} /> APARTAR LUGAR EN GRUPO
                 </a>
               </div>
             </div>
@@ -409,12 +409,12 @@ export default function DeCeroAInternetPage() {
 
               <div className="pt-6 mt-6 border-t-2 border-black">
                 <a 
-                  href={waUrlPersonal}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-3 px-4 bg-white text-black font-mono font-bold text-center border-2 border-black hover:bg-brand-yellow transition-all flex items-center justify-center gap-2 shadow-neo"
+                  href="#chat"
+                  data-open-chat="true"
+                  data-chat-prompt={promptPersonal}
+                  className="w-full py-3 px-4 bg-white text-black font-mono font-bold text-center border-2 border-black hover:bg-brand-yellow transition-all flex items-center justify-center gap-2 shadow-neo cursor-pointer"
                 >
-                  <MessageCircle size={16} /> SOLICITAR ASESORÍA PERSONAL
+                  <Sparkles size={16} /> SOLICITAR ASESORÍA PERSONAL
                 </a>
               </div>
             </div>
@@ -436,13 +436,18 @@ export default function DeCeroAInternetPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 font-mono text-xs">
             <div className="border-2 border-black p-6 bg-white shadow-neo space-y-2">
               <div className="flex items-center gap-2 text-zinc-500 font-bold uppercase">
-                <Calendar size={16} className="text-brand-pink" /> PRÓXIMA FECHA
+                <Calendar size={16} className="text-brand-pink" /> FECHAS CONFIRMADAS
               </div>
-              <div className="text-lg font-bold text-black uppercase">
-                Próximamente
+              <div className="text-sm font-bold text-black uppercase space-y-1">
+                <div className="text-brand-pink font-extrabold">📅 3 Fechas Disponibles:</div>
+                <div className="bg-zinc-100 p-2 border border-black space-y-1 font-mono text-xs">
+                  <div>• Sábado 26 de septiembre</div>
+                  <div>• Sábado 3 de octubre</div>
+                  <div>• Sábado 10 de octubre</div>
+                </div>
               </div>
-              <p className="text-zinc-600 font-sans text-xs">
-                Regístrate en la lista de interés de WhatsApp para apartar tu lugar con antelación.
+              <p className="text-zinc-600 font-sans text-xs pt-1">
+                Aparta tu fecha de preferencia hablando directamente con nuestro chatbot asistente.
               </p>
             </div>
 
@@ -481,15 +486,15 @@ export default function DeCeroAInternetPage() {
                 $1,499 <span className="text-sm font-bold">MXN</span>
               </div>
               <p className="font-sans text-sm text-zinc-800 leading-relaxed">
-                Paga con anticipación y asegura tu lugar. Grupos pequeños para brindar atención personalizada.
+                Paga con anticipación y asegura tu lugar. Grupos reducidos para garantizar feedback personalizado.
               </p>
               <a 
-                href={waUrlBook}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 w-full py-3 px-6 bg-black text-white font-bold hover:bg-white hover:text-black border-2 border-black transition-all shadow-[2px_2px_0px_#000]"
+                href="#chat"
+                data-open-chat="true"
+                data-chat-prompt={promptGroup}
+                className="inline-flex items-center justify-center gap-2 w-full py-3 px-6 bg-black text-white font-bold hover:bg-white hover:text-black border-2 border-black transition-all shadow-[2px_2px_0px_#000] cursor-pointer"
               >
-                <MessageCircle size={16} /> APARTAR MI LUGAR
+                <Sparkles size={16} /> APARTAR MI LUGAR EN EL CHAT
               </a>
             </div>
 
@@ -506,12 +511,12 @@ export default function DeCeroAInternetPage() {
                 </p>
               </div>
               <a 
-                href={waUrlPersonal}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 w-full py-3 px-6 bg-zinc-100 text-black font-bold hover:bg-brand-pink hover:text-white border-2 border-black transition-all shadow-[2px_2px_0px_#000]"
+                href="#chat"
+                data-open-chat="true"
+                data-chat-prompt={promptPersonal}
+                className="inline-flex items-center justify-center gap-2 w-full py-3 px-6 bg-zinc-100 text-black font-bold hover:bg-brand-pink hover:text-white border-2 border-black transition-all shadow-[2px_2px_0px_#000] cursor-pointer"
               >
-                <MessageCircle size={16} /> COTIZAR ASESORÍA
+                <Sparkles size={16} /> COTIZAR ASESORÍA PERSONAL
               </a>
             </div>
           </div>
@@ -524,26 +529,26 @@ export default function DeCeroAInternetPage() {
               {"// REGISTRO & CONTACTO DIRECTO"}
             </span>
             <h2 className="text-3xl sm:text-5xl font-extrabold uppercase tracking-tight font-sans">
-              ¡Reserva tu lugar en el próximo grupo!
+              ¡Reserva tu lugar en las próximas fechas!
             </h2>
             <p className="font-sans text-zinc-300 text-sm sm:text-base leading-relaxed">
-              En cuatro horas puedes construir una herramienta que represente tu negocio durante años.
+              Fechas disponibles: Sábado 26 de septiembre, Sábado 3 de octubre y Sábado 10 de octubre.
             </p>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a 
-              href={waUrlGroup}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full sm:w-auto px-8 py-4 bg-[#25d366] text-black font-mono font-bold text-base border-2 border-white hover:bg-brand-yellow hover:text-black transition-all flex items-center justify-center gap-2 shadow-[4px_4px_0px_#fff]"
+              href="#chat"
+              data-open-chat="true"
+              data-chat-prompt={promptGroup}
+              className="w-full sm:w-auto px-8 py-4 bg-brand-yellow text-black font-mono font-bold text-base border-2 border-white hover:bg-white hover:text-black transition-all flex items-center justify-center gap-2 shadow-[4px_4px_0px_#fff] cursor-pointer"
             >
-              <MessageCircle size={20} /> ESCRÍBENOS POR WHATSAPP
+              <Sparkles size={20} /> APARTAR LUGAR EN EL CHAT ASISTENTE
             </a>
           </div>
 
           <div className="font-mono text-xs text-zinc-400 pt-4 border-t border-zinc-800">
-            Información e inscripción directa al WhatsApp: <span className="text-brand-yellow font-bold">333 576 9348</span>
+            Fechas confirmadas: <span className="text-brand-yellow font-bold">26 Sep · 3 Oct · 10 Oct</span> · Atención y registro directo por el chatbot
           </div>
         </section>
 
@@ -553,18 +558,6 @@ export default function DeCeroAInternetPage() {
       <footer className="border-t-2 border-black bg-white py-6 px-6 text-center font-mono text-xs text-zinc-500">
         <div>© {new Date().getFullYear()} Rubén Oroz · Taller De Cero a Internet · Todos los derechos reservados</div>
       </footer>
-
-      {/* FLOATING WHATSAPP BUTTON */}
-      <a 
-        href={waUrlGroup}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#25d366] border-2 border-black flex items-center justify-center text-black hover:bg-black hover:text-white shadow-neo active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer"
-        title="Contactar por WhatsApp"
-        aria-label="Contactar por WhatsApp"
-      >
-        <MessageCircle size={28} />
-      </a>
 
     </div>
   )
