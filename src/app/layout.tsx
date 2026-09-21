@@ -73,9 +73,33 @@ export default function RootLayout({
     >
       <body className="min-h-full bg-background text-foreground font-sans selection:bg-brand-yellow selection:text-black">
         {children}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              document.addEventListener('click', function(e) {
+                var trigger = e.target && e.target.closest ? e.target.closest('[data-open-chat], a[href="#chat"]') : null;
+                if (trigger) {
+                  e.preventDefault();
+                  var prompt = trigger.getAttribute('data-chat-prompt') || '';
+                  if (window.openRubenChat) {
+                    window.openRubenChat(prompt);
+                  } else {
+                    var check = setInterval(function() {
+                      if (window.openRubenChat) {
+                        clearInterval(check);
+                        window.openRubenChat(prompt);
+                      }
+                    }, 50);
+                    setTimeout(function() { clearInterval(check); }, 4000);
+                  }
+                }
+              });
+            `
+          }}
+        />
         <Script
-          src="https://hub.rubenoroz.com/chat/widget.js"
-          strategy="lazyOnload"
+          src="https://hub.rubenoroz.com/chat/widget.js?v=20260921_2"
+          strategy="afterInteractive"
         />
       </body>
     </html>
