@@ -70,8 +70,12 @@ export default function RootLayout({
     <html
       lang="es"
       className={`${outfit.variable} ${spaceMono.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full bg-background text-foreground font-sans selection:bg-brand-yellow selection:text-black">
+      <body 
+        className="min-h-full bg-background text-foreground font-sans selection:bg-brand-yellow selection:text-black"
+        suppressHydrationWarning
+      >
         {children}
         <script
           dangerouslySetInnerHTML={{
