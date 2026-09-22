@@ -107,14 +107,53 @@ export default function Portfolio({ data }: PortfolioProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [activeProject, setActiveProject] = useState<Project | null>(null)
   const [activeCourse, setActiveCourse] = useState<Course | null>(null)
-  const [currentSlide, setCurrentSlide] = useState(0)
+  const videoRef = useRef<HTMLVideoElement | null>(null)
 
-  // Rotate hero background slides automatically
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % 3)
-    }, 6000)
-    return () => clearInterval(timer)
+  // Control hero background video scrub via horizontal mouse movement
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+
+    let prevX: number | null = null
+    let targetTime: number | null = null
+    let isSeeking = false
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!video.duration) return
+
+      if (prevX === null) {
+        prevX = e.clientX
+        return
+      }
+
+      const deltaX = e.clientX - prevX
+      prevX = e.clientX
+
+      const current = targetTime !== null ? targetTime : video.currentTime
+      const step = (deltaX / window.innerWidth) * 0.8 * video.duration
+      targetTime = Math.max(0, Math.min(video.duration, current + step))
+
+      if (!isSeeking) {
+        isSeeking = true
+        video.currentTime = targetTime
+      }
+    }
+
+    const handleSeeked = () => {
+      if (targetTime !== null && Math.abs(targetTime - video.currentTime) > 0.01) {
+        video.currentTime = targetTime
+      } else {
+        isSeeking = false
+      }
+    }
+
+    window.addEventListener('mousemove', handleMouseMove)
+    video.addEventListener('seeked', handleSeeked)
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove)
+      video.removeEventListener('seeked', handleSeeked)
+    }
   }, [])
   
   // Contact Form State
@@ -280,79 +319,50 @@ export default function Portfolio({ data }: PortfolioProps) {
         {/* SECTION 1: HERO */}
         <section 
           id="home" 
-          className="min-h-[90vh] flex flex-col justify-center border-b-2 border-black relative px-6 py-20 md:p-20 overflow-hidden"
+          className="min-h-[92vh] sm:min-h-screen flex flex-col justify-end border-b-2 border-black relative px-6 py-10 md:px-12 md:py-14 lg:px-14 lg:py-14 overflow-hidden"
         >
-          {/* Slider Backgrounds */}
-          <div className="absolute inset-0 z-0">
-            {[
-              '/images/hero_1.jpg',
-              '/images/hero_2.jpg',
-              '/images/hero_3.jpg'
-            ].map((url, idx) => (
-              <div 
-                key={idx}
-                className="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out"
-                style={{ 
-                  backgroundImage: `url('${url}'), url("${getPlaceholderSvg(1671, 1080, `IMAGEN HERO ${idx + 1}`)}")`,
-                  opacity: currentSlide === idx ? 1 : 0
-                }}
-              />
-            ))}
-            {/* Soft Overlay for text legibility */}
-            <div className="absolute inset-0 bg-white/25 z-0"></div>
-          </div>
+          {/* Background Interactive Video */}
+          <video
+            ref={videoRef}
+            muted
+            playsInline
+            preload="auto"
+            className="absolute inset-0 w-full h-full object-cover pointer-events-none z-0"
+            style={{ objectPosition: '70% center' }}
+          >
+            <source src="/media/Animate_video_in_four_seconds_20260921230445.mp4" type="video/mp4" />
+          </video>
 
+          {/* Soft Overlay for text legibility */}
+          <div className="absolute inset-0 bg-white/20 z-0 pointer-events-none" />
 
-          <div className="max-w-4xl relative z-10">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white border-2 border-black text-[#c32026] font-mono text-xs uppercase mb-6 shadow-neo">
-              <Sparkles size={12} className="animate-pulse text-[#c32026]" /> Experto en Innovación & Medios
-            </div>
-            
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight uppercase leading-none font-sans mb-6">
-              HOLA, SOY <br />
-              <span className="text-[#c32026] font-extrabold">
-                {data.profile.full_name}
-              </span>
-            </h1>
-
-            {/* Subtle overlay box for subtitle and description text legibility */}
-            <div className="bg-white/70 backdrop-blur-md p-6 border-l-4 border-brand-yellow mb-8 max-w-2xl border border-black/5 shadow-sm">
-              <div className="font-mono text-lg sm:text-2xl text-zinc-800 leading-relaxed mb-4">
-                {data.profile.title}
+          {/* Bottom Two-Column Content Layout */}
+          <div className="w-full relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-end mt-auto">
+            {/* Columna inferior izquierda: Badge, HOLA SOY, Nombre */}
+            <div className="lg:col-span-7 flex flex-col items-start">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-white border-2 border-black text-[#c32026] font-mono text-xs uppercase mb-3 shadow-neo">
+                <Sparkles size={12} className="animate-pulse text-[#c32026]" /> Experto en Innovación & Medios
               </div>
-              <p className="text-zinc-600 text-base sm:text-lg leading-relaxed">
-                Integro tecnología aplicada, inteligencia artificial y producción televisiva profesional mediante metodologías de aprendizaje activo.
-              </p>
+              
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-extrabold tracking-tight uppercase leading-[0.95] font-sans text-black m-0">
+                HOLA, SOY <br />
+                <span className="text-[#c32026] font-extrabold">
+                  {data.profile.full_name}
+                </span>
+              </h1>
             </div>
 
-            <div className="flex flex-wrap gap-4">
-              <a 
-                href="#portfolio" 
-                className="px-6 py-3 bg-brand-yellow text-black font-mono font-bold border-2 border-black hover:bg-black hover:text-white hover:shadow-neo active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-all"
-              >
-                PROYECTOS
-              </a>
-              <a 
-                href={`mailto:${data.profile.email}`} 
-                className="px-6 py-3 bg-white text-black font-mono border-2 border-black hover:bg-brand-pink hover:text-white hover:shadow-neo active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-all"
-              >
-                CONTACTAR
-              </a>
+            {/* Columna inferior derecha: Coordinación ABP y Descripción */}
+            <div className="lg:col-span-5 flex justify-start lg:justify-end">
+              <div className="bg-white/85 backdrop-blur-md p-5 sm:p-6 md:p-7 border-l-4 border-brand-yellow border-t border-r border-b border-black/15 shadow-neo max-w-xl w-full">
+                <div className="font-mono text-base sm:text-lg md:text-xl font-bold text-zinc-900 leading-snug mb-2 sm:mb-3">
+                  {data.profile.title}
+                </div>
+                <p className="text-zinc-700 text-xs sm:text-sm md:text-base leading-relaxed m-0">
+                  Integro tecnología aplicada, inteligencia artificial y producción televisiva profesional mediante metodologías de aprendizaje activo.
+                </p>
+              </div>
             </div>
-          </div>
-
-          {/* Slider Pagination Indicators */}
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2.5 z-10">
-            {[0, 1, 2].map((idx) => (
-              <button
-                key={idx}
-                onClick={() => setCurrentSlide(idx)}
-                className={`h-1.5 transition-all duration-300 border border-black cursor-pointer shadow-[1px_1px_0px_#000] ${
-                  currentSlide === idx ? 'w-8 bg-brand-pink' : 'w-3 bg-white hover:bg-zinc-100'
-                }`}
-                aria-label={`Slide ${idx + 1}`}
-              />
-            ))}
           </div>
         </section>
 
