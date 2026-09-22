@@ -109,10 +109,23 @@ export default function Portfolio({ data }: PortfolioProps) {
   const [activeCourse, setActiveCourse] = useState<Course | null>(null)
   const videoRef = useRef<HTMLVideoElement | null>(null)
 
-  // Control hero background video scrub via horizontal mouse movement
+  // Control hero background video scrub via mouse & touch movement
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
+
+    // Set initial frame to front-facing smiling character (~1.9s)
+    const setFrontFacingFrame = () => {
+      if (video.currentTime < 0.1) {
+        video.currentTime = 1.9
+      }
+    }
+
+    if (video.readyState >= 1) {
+      setFrontFacingFrame()
+    } else {
+      video.addEventListener('loadedmetadata', setFrontFacingFrame, { once: true })
+    }
 
     let prevX: number | null = null
     let targetTime: number | null = null
@@ -139,6 +152,37 @@ export default function Portfolio({ data }: PortfolioProps) {
       }
     }
 
+    // Touch support for mobile devices
+    let touchStartX: number | null = null
+    let touchStartY: number | null = null
+
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 1) {
+        touchStartX = e.touches[0].clientX
+        touchStartY = e.touches[0].clientY
+      }
+    }
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!video.duration || touchStartX === null || touchStartY === null) return
+      const currentX = e.touches[0].clientX
+      const currentY = e.touches[0].clientY
+      const deltaX = currentX - touchStartX
+      const deltaY = currentY - touchStartY
+
+      if (Math.abs(deltaX) > Math.abs(deltaY) * 1.2) {
+        touchStartX = currentX
+        const current = targetTime !== null ? targetTime : video.currentTime
+        const step = (deltaX / window.innerWidth) * 0.8 * video.duration
+        targetTime = Math.max(0, Math.min(video.duration, current + step))
+
+        if (!isSeeking) {
+          isSeeking = true
+          video.currentTime = targetTime
+        }
+      }
+    }
+
     const handleSeeked = () => {
       if (targetTime !== null && Math.abs(targetTime - video.currentTime) > 0.01) {
         video.currentTime = targetTime
@@ -148,11 +192,16 @@ export default function Portfolio({ data }: PortfolioProps) {
     }
 
     window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('touchstart', handleTouchStart, { passive: true })
+    window.addEventListener('touchmove', handleTouchMove, { passive: true })
     video.addEventListener('seeked', handleSeeked)
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('touchstart', handleTouchStart)
+      window.removeEventListener('touchmove', handleTouchMove)
       video.removeEventListener('seeked', handleSeeked)
+      video.removeEventListener('loadedmetadata', setFrontFacingFrame)
     }
   }, [])
   
@@ -319,7 +368,7 @@ export default function Portfolio({ data }: PortfolioProps) {
         {/* SECTION 1: HERO */}
         <section 
           id="home" 
-          className="min-h-[92vh] sm:min-h-screen flex flex-col justify-end border-b-2 border-black relative px-6 py-10 md:px-12 md:py-14 lg:px-14 lg:py-14 overflow-hidden"
+          className="min-h-[92vh] sm:min-h-screen flex flex-col justify-end border-b-2 border-black relative px-4 py-8 sm:px-6 sm:py-10 md:px-12 md:py-14 lg:px-14 lg:py-14 overflow-hidden"
         >
           {/* Background Interactive Video */}
           <video
@@ -327,8 +376,8 @@ export default function Portfolio({ data }: PortfolioProps) {
             muted
             playsInline
             preload="auto"
-            className="absolute inset-0 w-full h-full object-cover pointer-events-none z-0"
-            style={{ objectPosition: '70% center' }}
+            poster="/media/hero_poster.jpg"
+            className="hero-bg-video"
           >
             <source src="/media/Animate_video_in_four_seconds_20260921230445.mp4" type="video/mp4" />
           </video>
@@ -337,10 +386,10 @@ export default function Portfolio({ data }: PortfolioProps) {
           <div className="absolute inset-0 bg-white/20 z-0 pointer-events-none" />
 
           {/* Bottom Two-Column Content Layout */}
-          <div className="w-full relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-end mt-auto">
+          <div className="w-full relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 items-end mt-auto">
             {/* Columna inferior izquierda: Badge, HOLA SOY, Nombre */}
             <div className="lg:col-span-7 flex flex-col items-start">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-white border-2 border-black text-[#c32026] font-mono text-xs uppercase mb-3 shadow-neo">
+              <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 py-0.5 sm:px-3 sm:py-1 bg-white border-2 border-black text-[#c32026] font-mono text-[11px] sm:text-xs uppercase mb-2 sm:mb-3 shadow-neo">
                 <Sparkles size={12} className="animate-pulse text-[#c32026]" /> Experto en Innovación & Medios
               </div>
               
@@ -354,8 +403,8 @@ export default function Portfolio({ data }: PortfolioProps) {
 
             {/* Columna inferior derecha: Coordinación ABP y Descripción */}
             <div className="lg:col-span-5 flex justify-start lg:justify-end">
-              <div className="bg-white/85 backdrop-blur-md p-5 sm:p-6 md:p-7 border-l-4 border-brand-yellow border-t border-r border-b border-black/15 shadow-neo max-w-xl w-full">
-                <div className="font-mono text-base sm:text-lg md:text-xl font-bold text-zinc-900 leading-snug mb-2 sm:mb-3">
+              <div className="bg-white/85 backdrop-blur-md p-4 sm:p-6 md:p-7 border-l-4 border-brand-yellow border-t border-r border-b border-black/15 shadow-neo max-w-xl w-full">
+                <div className="font-mono text-sm sm:text-base md:text-xl font-bold text-zinc-900 leading-snug mb-1.5 sm:mb-3">
                   {data.profile.title}
                 </div>
                 <p className="text-zinc-700 text-xs sm:text-sm md:text-base leading-relaxed m-0">

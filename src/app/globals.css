@@ -92,4 +92,20 @@ input:focus, textarea:focus {
   box-shadow: 2px 2px 0px 0px #000000;
 }
 
+/* Hero background video responsive positioning */
+.hero-bg-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  z-index: 0;
+  object-position: 50% 12%;
+}
 
+@media (min-width: 768px) {
+  .hero-bg-video {
+    object-position: 70% center;
+  }
+}
