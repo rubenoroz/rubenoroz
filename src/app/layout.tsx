@@ -102,7 +102,7 @@ export default function RootLayout({
           }}
         />
         <Script
-          src="https://hub.rubenoroz.com/chat/widget.js?v=20260921_2"
+          src="https://hub.rubenoroz.com/chat/widget.js?v=20260922_typing"
           strategy="afterInteractive"
         />
       </body>
